@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Punto Límite — Ropa Urbana</title>
-  <meta name="description" content="Punto Límite — Ropa urbana de calidad. Sin límites.">
+  <title>Punto Límite — Ropa Deportiva</title>
+  <meta name="description" content="Punto Límite — Indumentaria deportiva de alta performance. Colección 26.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,7 +15,9 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="#inicio" class="nav-logo">PUNTO LÍMITE</a>
+      <a href="#inicio" class="nav-logo">
+        <img src="img/logo.jpeg" alt="Punto Límite" class="nav-logo-img">
+      </a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#productos">Productos</a></li>
         <li><a href="#categorias">Categorías</a></li>
@@ -31,12 +33,17 @@
   <!-- HERO -->
   <section class="hero" id="inicio">
     <div class="hero-content">
-      <p class="hero-tag">Nueva Colección 2025</p>
-      <h1 class="hero-title">SIN<br>LÍMITES</h1>
-      <p class="hero-subtitle">Ropa que define tu estilo.<br>Cada prenda, una actitud.</p>
-      <div class="hero-actions">
-        <a href="#productos" class="btn btn-primary">Ver Colección</a>
-        <a href="#nosotros" class="btn btn-outline">Nuestra Historia</a>
+      <div class="hero-text">
+        <p class="hero-tag">Nueva Colección 26</p>
+        <h1 class="hero-title">SIN<br>LÍMITES</h1>
+        <p class="hero-subtitle">Indumentaria deportiva de alta performance. Diseñada para ir más lejos.</p>
+        <div class="hero-actions">
+          <a href="#productos" class="btn btn-primary">Ver Colección</a>
+          <a href="#nosotros" class="btn btn-outline">Nuestra Historia</a>
+        </div>
+      </div>
+      <div class="hero-image-wrap">
+        <img src="img/hero-producto.webp" alt="Colección 26 — Punto Límite" class="hero-img">
       </div>
     </div>
     <div class="hero-scroll">
@@ -49,7 +56,7 @@
   <section class="section" id="productos">
     <div class="container">
       <div class="section-header">
-        <p class="section-tag">Lo Nuevo</p>
+        <p class="section-tag">Colección 26</p>
         <h2 class="section-title">Novedades</h2>
       </div>
       <div class="products-grid">
@@ -59,7 +66,7 @@
             <span class="product-badge">Nuevo</span>
           </div>
           <div class="product-info">
-            <h3>Campera Oversize</h3>
+            <h3>Campera Running</h3>
             <p class="product-price">$45.000</p>
             <a href="#contacto" class="btn-link">Consultar &rarr;</a>
           </div>
@@ -70,7 +77,7 @@
             <span class="product-badge">Último!</span>
           </div>
           <div class="product-info">
-            <h3>Hoodie Premium</h3>
+            <h3>Buzo Técnico</h3>
             <p class="product-price">$32.000</p>
             <a href="#contacto" class="btn-link">Consultar &rarr;</a>
           </div>
@@ -79,7 +86,7 @@
         <div class="product-card fade-in">
           <div class="product-img img-3"></div>
           <div class="product-info">
-            <h3>Jean Cargo</h3>
+            <h3>Short Deportivo</h3>
             <p class="product-price">$38.000</p>
             <a href="#contacto" class="btn-link">Consultar &rarr;</a>
           </div>
@@ -90,7 +97,7 @@
             <span class="product-badge">Nuevo</span>
           </div>
           <div class="product-info">
-            <h3>Remera Oversize</h3>
+            <h3>Remera Técnica</h3>
             <p class="product-price">$18.000</p>
             <a href="#contacto" class="btn-link">Consultar &rarr;</a>
           </div>
@@ -104,16 +111,16 @@
   <section class="section section-dark" id="categorias">
     <div class="container">
       <div class="section-header">
-        <p class="section-tag">Explorá</p>
-        <h2 class="section-title light">Categorías</h2>
+        <p class="section-tag">Disciplinas</p>
+        <h2 class="section-title">Categorías</h2>
       </div>
       <div class="categories-grid">
         <div class="category-card fade-in cat-hombre">
-          <h3>Hombre</h3>
+          <h3>Running</h3>
           <a href="#contacto" class="category-link">Ver más &rarr;</a>
         </div>
         <div class="category-card fade-in cat-mujer">
-          <h3>Mujer</h3>
+          <h3>Training</h3>
           <a href="#contacto" class="category-link">Ver más &rarr;</a>
         </div>
         <div class="category-card fade-in cat-accesorios">
@@ -136,8 +143,8 @@
         <div class="about-text fade-in">
           <p class="section-tag">Nuestra Historia</p>
           <h2 class="section-title">¿Quiénes somos?</h2>
-          <p>Punto Límite nació de la necesidad de vestir sin restricciones. Creemos que la ropa es una forma de expresión, y cada colección refleja esa filosofía.</p>
-          <p>Trabajamos con materiales de calidad y diseños pensados para quienes no se conforman con lo ordinario.</p>
+          <p>Punto Límite nació para acompañar a quienes no se detienen. Diseñamos indumentaria deportiva para rendir al máximo, sin importar el entrenamiento ni la distancia.</p>
+          <p>Usamos materiales técnicos de alta performance pensados para resistir cada kilómetro, cada repetición y cada desafío.</p>
           <div class="about-stats">
             <div class="stat fade-in">
               <span class="stat-number">500+</span>
@@ -192,8 +199,9 @@
     <div class="container">
       <div class="footer-grid">
         <div>
+          <img src="img/logo.jpeg" alt="Punto Límite" class="footer-logo-img">
           <p class="footer-logo">PUNTO LÍMITE</p>
-          <p class="footer-desc">Ropa urbana de calidad. Sin límites.</p>
+          <p class="footer-desc">Indumentaria deportiva de alta performance. Sin límites.</p>
         </div>
         <div>
           <p class="footer-heading">Navegación</p>
