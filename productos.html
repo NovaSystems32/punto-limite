@@ -7,6 +7,12 @@
   <link rel="icon" type="image/jpeg" href="img/logo.jpeg">
   <link rel="apple-touch-icon" href="img/logo.jpeg">
   <meta name="description" content="Catálogo completo de indumentaria deportiva Punto Límite.">
+  <meta property="og:title"       content="Catálogo — Punto Límite">
+  <meta property="og:description" content="Todos los productos de Punto Límite. Ropa deportiva de alta performance.">
+  <meta property="og:image"       content="https://novasystems32.github.io/punto-limite/img/logo.jpeg">
+  <meta property="og:url"         content="https://novasystems32.github.io/punto-limite/productos.html">
+  <meta property="og:type"        content="website">
+  <meta name="twitter:card"       content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -155,7 +161,15 @@
       <form class="checkout-form" id="checkoutForm">
         <input type="text" id="checkoutNombre"   placeholder="Tu nombre completo" required>
         <input type="tel"  id="checkoutTelefono" placeholder="Tu teléfono / WhatsApp" required>
-        <textarea id="checkoutNotas" rows="3" placeholder="Talle, color u otras aclaraciones (opcional)"></textarea>
+        <textarea id="checkoutNotas" rows="2" placeholder="Aclaraciones (opcional)"></textarea>
+        <div class="coupon-input-row">
+          <input type="text" id="couponInput" placeholder="Código de descuento">
+          <button type="button" class="btn-coupon" onclick="applyCoupon()">Aplicar</button>
+        </div>
+        <p class="coupon-feedback" id="couponFeedback"></p>
+        <div class="checkout-total-row">
+          <span>Total</span><strong id="checkoutFinalTotal"></strong>
+        </div>
         <button type="submit" id="orderBtn">Confirmar pedido</button>
       </form>
     </div>

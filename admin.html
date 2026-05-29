@@ -40,6 +40,26 @@
 
     <main class="admin-main">
 
+      <!-- ===== ESTADÍSTICAS ===== -->
+      <div class="admin-stats-bar">
+        <div class="stat-card">
+          <span class="stat-card-value" id="statTotalMes">—</span>
+          <span class="stat-card-label">Vendido este mes</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-value" id="statPedidosMes">—</span>
+          <span class="stat-card-label">Pedidos este mes</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-value" id="statPendientes">—</span>
+          <span class="stat-card-label">Pendientes</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-value stat-small" id="statTopProducto">—</span>
+          <span class="stat-card-label">Más vendido</span>
+        </div>
+      </div>
+
       <!-- ===== PRODUCTOS ===== -->
       <div class="admin-section">
         <div class="admin-section-header">
@@ -58,11 +78,37 @@
         </div>
       </div>
 
+      <!-- ===== CUPONES ===== -->
+      <div class="admin-section">
+        <div class="admin-section-header">
+          <h3>CUPONES</h3>
+          <button class="btn-primary" id="addCouponBtn">+ Nuevo cupón</button>
+        </div>
+        <div class="product-list" id="couponList">
+          <p class="empty-list">Cargando...</p>
+        </div>
+        <form id="couponForm" class="coupon-form" style="display:none">
+          <input type="text"   id="cCode"  placeholder="Código (ej: PROMO10)" required>
+          <select id="cTipo">
+            <option value="porcentaje">% descuento</option>
+            <option value="fijo">$ descuento fijo</option>
+          </select>
+          <input type="number" id="cValor" placeholder="Valor (ej: 10 = 10%)" min="1" required>
+          <div style="display:flex;gap:0.5rem">
+            <button type="submit"  class="btn-primary" style="flex:1">Guardar</button>
+            <button type="button"  class="btn-cancel"  id="cancelCoupon">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
       <!-- ===== PEDIDOS ===== -->
       <div class="admin-section">
         <div class="admin-section-header">
           <h3>PEDIDOS</h3>
-          <button class="btn-primary" id="refreshOrders">↻ Actualizar</button>
+          <div style="display:flex;gap:0.6rem">
+            <button class="btn-primary" id="exportBtn">⬇ Exportar Excel</button>
+            <button class="btn-primary" id="refreshOrders">↻ Actualizar</button>
+          </div>
         </div>
         <div id="adminOrderList">
           <p class="empty-list">Cargando pedidos...</p>

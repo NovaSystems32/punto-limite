@@ -7,6 +7,9 @@
 /* --- WhatsApp del negocio --- */
 var WA_NUMERO = '543571626532';
 
+/* --- Cupón aplicado --- */
+var _cupon = null;
+
 /* --- Último pedido (para el mensaje de WA) --- */
 var _lastPedido = null;
 
@@ -23,6 +26,14 @@ function saveCart() {
 function getTotal() {
   return cart.reduce(function(sum, item) { return sum + item.precio * item.cantidad; }, 0);
 }
+function getDescuento() {
+  if (!_cupon) return 0;
+  var sub = getTotal();
+  return _cupon.tipo === 'porcentaje'
+    ? Math.round(sub * _cupon.valor / 100)
+    : Math.min(_cupon.valor, sub);
+}
+function getFinalTotal() { return getTotal() - getDescuento(); }
 function getCount() {
   return cart.reduce(function(sum, item) { return sum + item.cantidad; }, 0);
 }
@@ -64,7 +75,13 @@ function renderCart() {
     '</div>';
   }).join('');
 
-  totalEl.textContent = formatPrice(getTotal());
+  var desc = getDescuento();
+  totalEl.textContent = formatPrice(getFinalTotal());
+  var finalEl = document.getElementById('checkoutFinalTotal');
+  if (finalEl) {
+    finalEl.textContent = formatPrice(getFinalTotal());
+    if (desc > 0) finalEl.innerHTML = '<del style="font-size:1rem;color:#aaa;font-family:var(--font-body)">' + formatPrice(getTotal()) + '</del> ' + formatPrice(getFinalTotal());
+  }
 }
 
 /* --- Mapa de colores (nombre → hex) --- */
@@ -255,13 +272,22 @@ function submitOrder(e) {
     items:   cart.map(function(item) {
       return { nombre: item.nombre, talle: item.talle || '—', color: item.color || '—', precio: item.precio, cantidad: item.cantidad, subtotal: item.precio * item.cantidad };
     }),
-    total: getTotal()
+    subtotal:  getTotal(),
+    descuento: getDescuento(),
+    total:     getFinalTotal(),
+    cupon:     _cupon ? _cupon.codigo : null
   };
 
   _lastPedido = pedido; // guardar para el mensaje de WA
 
   db.collection('pedidos').add(pedido)
     .then(function() {
+      /* Incrementar uso del cupón */
+      if (_cupon && _cupon._id) {
+        db.collection('cupones').doc(_cupon._id).update({ usos: firebase.firestore.FieldValue.increment(1) }).catch(function(){});
+        _cupon = null;
+      }
+
       /* Descontar stock automáticamente */
       var batch = db.batch();
       cart.forEach(function(item) {
@@ -288,6 +314,30 @@ function submitOrder(e) {
 }
 
 /* --- Eventos --- */
+/* --- Aplicar cupón --- */
+function applyCoupon() {
+  var code = (document.getElementById('couponInput').value || '').trim().toUpperCase();
+  var fb   = document.getElementById('couponFeedback');
+  if (!code) { fb.textContent = 'Ingresá un código'; fb.className = 'coupon-feedback err'; return; }
+
+  db.collection('cupones').where('codigo', '==', code).where('activo', '==', true).get()
+    .then(function(snap) {
+      if (snap.empty) {
+        _cupon = null;
+        fb.textContent = 'Código inválido o inactivo';
+        fb.className   = 'coupon-feedback err';
+      } else {
+        _cupon = snap.docs[0].data();
+        _cupon._id = snap.docs[0].id;
+        var label = _cupon.tipo === 'porcentaje' ? _cupon.valor + '% OFF' : formatPrice(_cupon.valor) + ' OFF';
+        fb.textContent = '✓ Descuento aplicado: ' + label;
+        fb.className   = 'coupon-feedback ok';
+      }
+      renderCart();
+    })
+    .catch(function() { fb.textContent = 'Error al verificar el código'; fb.className = 'coupon-feedback err'; });
+}
+
 /* ============================================================
    DETALLE DEL PRODUCTO
    ============================================================ */
@@ -421,6 +471,10 @@ function openWhatsApp() {
     lines.push('• ' + item.nombre + detStr + ' × ' + item.cantidad + '  →  ' + formatPrice(item.subtotal));
   });
   lines.push('');
+  if (p.descuento && p.descuento > 0) {
+    lines.push('Subtotal: ' + formatPrice(p.subtotal));
+    lines.push('Descuento' + (p.cupon ? ' (' + p.cupon + ')' : '') + ': -' + formatPrice(p.descuento));
+  }
   lines.push('*Total: ' + formatPrice(p.total) + '*');
   lines.push('');
   lines.push('👤 *Cliente:* ' + p.cliente.nombre);

@@ -88,8 +88,48 @@ if (checkSession()) {
 function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('adminScreen').style.display = 'block';
+  loadStats();
   subscribeProductos();
   subscribeOrders();
+  subscribeCupones();
+}
+
+/* ============================================================
+   ESTADÍSTICAS
+   ============================================================ */
+function loadStats() {
+  db.collection('pedidos').get().then(function(snap) {
+    var now       = new Date();
+    var mes       = now.getMonth();
+    var anio      = now.getFullYear();
+    var totalMes  = 0;
+    var countMes  = 0;
+    var pendientes = 0;
+    var productCount = {};
+
+    snap.docs.forEach(function(doc) {
+      var p = doc.data();
+      if (p.fecha) {
+        var f = new Date(p.fecha.seconds * 1000);
+        if (f.getMonth() === mes && f.getFullYear() === anio) {
+          totalMes += p.total || 0;
+          countMes++;
+        }
+      }
+      if ((p.estado || 'pendiente') === 'pendiente') pendientes++;
+      (p.items || []).forEach(function(item) {
+        productCount[item.nombre] = (productCount[item.nombre] || 0) + (item.cantidad || 1);
+      });
+    });
+
+    var keys = Object.keys(productCount);
+    var top  = keys.length ? keys.reduce(function(a,b){ return productCount[a]>productCount[b]?a:b; }) : '—';
+
+    document.getElementById('statTotalMes').textContent    = snap.empty ? '$0' : '$' + totalMes.toLocaleString('es-AR');
+    document.getElementById('statPedidosMes').textContent  = countMes;
+    document.getElementById('statPendientes').textContent  = pendientes;
+    document.getElementById('statTopProducto').textContent = top.length > 14 ? top.slice(0,13)+'…' : top;
+  }).catch(function(e){ console.error(e); });
 }
 
 /* ============================================================
@@ -364,5 +404,121 @@ function setEstado(id, estado) {
 }
 
 document.getElementById('refreshOrders').addEventListener('click', function() {
-  showAdminToast('Pedidos actualizados en tiempo real ✓', 'ok');
+  loadStats();
+  showAdminToast('Actualizado ✓', 'ok');
 });
+
+/* ============================================================
+   EXPORTAR PEDIDOS A CSV (abre en Excel)
+   ============================================================ */
+document.getElementById('exportBtn').addEventListener('click', function() {
+  var btn = this;
+  btn.textContent = 'Exportando...';
+  btn.disabled    = true;
+
+  db.collection('pedidos').orderBy('fecha', 'desc').get().then(function(snap) {
+    var rows = [['Fecha','Cliente','Teléfono','Notas','Productos','Total','Estado']];
+    snap.docs.forEach(function(doc) {
+      var p     = doc.data();
+      var fecha = p.fecha ? new Date(p.fecha.seconds*1000).toLocaleDateString('es-AR') : '—';
+      var items = (p.items||[]).map(function(i){
+        var d = [];
+        if (i.talle && i.talle!=='—') d.push('T:'+i.talle);
+        if (i.color && i.color!=='—') d.push(i.color);
+        return i.cantidad+'x '+i.nombre+(d.length?' ('+d.join(', ')+')':'');
+      }).join(' | ');
+      rows.push([
+        fecha,
+        (p.cliente&&p.cliente.nombre)  || '—',
+        (p.cliente&&p.cliente.telefono)|| '—',
+        (p.cliente&&p.cliente.notas)   || '',
+        items,
+        p.total || 0,
+        p.estado || 'pendiente'
+      ]);
+    });
+
+    var csv  = rows.map(function(r){
+      return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(',');
+    }).join('\n');
+    var blob = new Blob(['﻿'+csv], { type:'text/csv;charset=utf-8;' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href   = url;
+    a.download = 'pedidos-punto-limite.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    btn.textContent = '⬇ Exportar Excel';
+    btn.disabled    = false;
+    showAdminToast('Archivo descargado ✓', 'ok');
+  }).catch(function(e){
+    console.error(e);
+    btn.textContent = '⬇ Exportar Excel';
+    btn.disabled    = false;
+    showAdminToast('Error al exportar', 'err');
+  });
+});
+
+/* ============================================================
+   CUPONES
+   ============================================================ */
+var unsubCupones = null;
+
+function subscribeCupones() {
+  var list = document.getElementById('couponList');
+  unsubCupones = db.collection('cupones').onSnapshot(function(snap) {
+    if (snap.empty) {
+      list.innerHTML = '<p class="empty-list">No hay cupones. Creá uno arriba.</p>';
+      return;
+    }
+    list.innerHTML = snap.docs.map(function(doc) {
+      var c   = doc.data();
+      var val = c.tipo === 'porcentaje' ? c.valor + '% OFF' : '$' + Number(c.valor).toLocaleString('es-AR') + ' OFF';
+      return '<div class="coupon-row">' +
+        '<span class="coupon-icon">🏷️</span>' +
+        '<span class="coupon-code">' + c.codigo + '</span>' +
+        '<span class="coupon-val">' + val + '</span>' +
+        '<label class="toggle-dest' + (c.activo ? ' on' : '') + '">' +
+          '<input type="checkbox"' + (c.activo ? ' checked' : '') +
+          ' onchange="toggleCupon(\'' + doc.id + '\', this.checked)"> Activo' +
+        '</label>' +
+        '<button class="btn-del" onclick="deleteCupon(\'' + doc.id + '\')" title="Eliminar">🗑</button>' +
+      '</div>';
+    }).join('');
+  });
+}
+
+document.getElementById('addCouponBtn').addEventListener('click', function() {
+  var form = document.getElementById('couponForm');
+  form.style.display = form.style.display === 'none' ? 'grid' : 'none';
+});
+document.getElementById('cancelCoupon').addEventListener('click', function() {
+  document.getElementById('couponForm').style.display = 'none';
+  document.getElementById('couponForm').reset();
+});
+document.getElementById('couponForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var data = {
+    codigo: document.getElementById('cCode').value.trim().toUpperCase(),
+    tipo:   document.getElementById('cTipo').value,
+    valor:  parseInt(document.getElementById('cValor').value, 10),
+    activo: true,
+    usos:   0
+  };
+  db.collection('cupones').add(data).then(function() {
+    document.getElementById('couponForm').style.display = 'none';
+    document.getElementById('couponForm').reset();
+    showAdminToast('Cupón creado ✓', 'ok');
+  }).catch(function(){ showAdminToast('Error al crear cupón', 'err'); });
+});
+
+function toggleCupon(id, value) {
+  db.collection('cupones').doc(id).update({ activo: value });
+}
+function deleteCupon(id) {
+  if (!confirm('¿Eliminar este cupón?')) return;
+  db.collection('cupones').doc(id).delete()
+    .then(function(){ showAdminToast('Cupón eliminado', 'ok'); });
+}

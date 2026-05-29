@@ -82,6 +82,79 @@ a { text-decoration: none; color: inherit; }
 .login-box button:hover { background: var(--accent); }
 .login-error { color: var(--red); font-size: 0.82rem; margin-top: 0.6rem; display: none; }
 
+/* ---- ESTADÍSTICAS ---- */
+.admin-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.stat-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 1.4rem 1.2rem;
+  display: flex; flex-direction: column; gap: 0.3rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.stat-card-value {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--black);
+}
+.stat-card-value.stat-small { font-size: 1.2rem; }
+.stat-card-label {
+  font-size: 0.75rem;
+  color: var(--gray);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+@media (max-width: 700px) {
+  .admin-stats-bar { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- CUPONES ---- */
+.coupon-form {
+  padding: 1.2rem 1.6rem 1.4rem;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 0.7rem;
+  align-items: end;
+}
+.coupon-form input,
+.coupon-form select {
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.coupon-form input:focus,
+.coupon-form select:focus { border-color: var(--accent); }
+.coupon-row {
+  display: grid;
+  grid-template-columns: 52px 1fr auto auto auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.6rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.coupon-row:last-child { border-bottom: none; }
+.coupon-code {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+.coupon-val { font-size: 0.85rem; color: var(--gray); }
+.coupon-icon { font-size: 1.6rem; }
+@media (max-width: 600px) {
+  .coupon-form { grid-template-columns: 1fr 1fr; }
+}
+
 /* ---- DASHBOARD ---- */
 .admin-screen { display: none; min-height: 100vh; }
 
