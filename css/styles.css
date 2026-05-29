@@ -1464,6 +1464,25 @@ img { display: block; max-width: 100%; }
   letter-spacing: 0.02em;
 }
 .btn-wa:hover { background: #1ebe5a; transform: translateY(-2px); }
+.btn-mp {
+  display: block;
+  background: #009ee3;
+  color: var(--white);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.btn-mp:hover { background: #007db8; transform: translateY(-2px); }
 
 /* Toast */
 .cart-toast {
