@@ -1463,6 +1463,20 @@ img { display: block; max-width: 100%; }
   transition: background 0.2s, transform 0.18s;
 }
 .btn-add-cart:hover { background: var(--accent); transform: translateY(-1px); }
+.btn-add-cart:disabled { background: #ccc; cursor: not-allowed; transform: none !important; opacity: 0.6; }
+
+/* Stock badges */
+.stock-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.22rem 0.65rem;
+  border-radius: 20px;
+  margin-bottom: 0.5rem;
+}
+.stock-low { background: #fef3c7; color: #92400e; }
+.stock-out { background: #fee2e2; color: #991b1b; }
 
 /* ============================================================
    SELECTOR DE TALLE

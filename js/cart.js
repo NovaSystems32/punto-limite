@@ -176,7 +176,7 @@ function doAddToCart(btn, talle, color) {
   if (existing) {
     existing.cantidad++;
   } else {
-    var item = { id: id, nombre: nombre, precio: precio, img: img, cantidad: 1 };
+    var item = { id: id, docId: docId, nombre: nombre, precio: precio, img: img, cantidad: 1 };
     if (talle) item.talle = talle;
     if (color) item.color = color;
     cart.push(item);
@@ -262,6 +262,18 @@ function submitOrder(e) {
 
   db.collection('pedidos').add(pedido)
     .then(function() {
+      /* Descontar stock automáticamente */
+      var batch = db.batch();
+      cart.forEach(function(item) {
+        if (item.docId) {
+          batch.update(
+            db.collection('productos').doc(item.docId),
+            { stock: firebase.firestore.FieldValue.increment(-item.cantidad) }
+          );
+        }
+      });
+      batch.commit().catch(function(e) { console.warn('Stock update:', e); });
+
       cart = [];
       saveCart();
       renderCart();

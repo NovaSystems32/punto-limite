@@ -61,6 +61,11 @@ document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el
 function renderCard(data, docId) {
   var img    = data.img || '';
   var imgSrc = (img.startsWith('http') || img.startsWith('data:')) ? img : 'img/' + img;
+  var stock  = typeof data.stock !== 'undefined' ? Number(data.stock) : 99;
+  var stockBadge  = stock === 0 ? '<span class="stock-badge stock-out">Sin stock</span>'
+                  : stock <= 5  ? '<span class="stock-badge stock-low">¡Últimas ' + stock + ' unidades!</span>'
+                  : '';
+  var btnDisabled = stock === 0 ? ' disabled' : '';
   return '<div class="product-card fade-in">' +
     '<div class="product-img">' +
       '<img src="' + imgSrc + '" alt="' + data.nombre + '" loading="lazy">' +
@@ -69,7 +74,8 @@ function renderCard(data, docId) {
     '<div class="product-info">' +
       '<h3>' + data.nombre + '</h3>' +
       '<p class="product-price">$' + Number(data.precio).toLocaleString('es-AR') + '</p>' +
-      '<button class="btn-add-cart"' +
+      (stockBadge ? '<div>' + stockBadge + '</div>' : '') +
+      '<button class="btn-add-cart"' + btnDisabled +
         ' data-id="'     + docId      + '"' +
         ' data-nombre="' + data.nombre.replace(/"/g, '&quot;') + '"' +
         ' data-precio="' + data.precio + '"' +

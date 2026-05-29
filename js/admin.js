@@ -14,16 +14,23 @@ var unsubOrders  = null;   // para cancelar el listener de pedidos
 
 /* --- Productos por defecto (se cargan la primera vez) --- */
 var defaultProductos = [
-  { nombre: 'Campera Running', precio: 45000, img: 'prod-campera.jpg', badge: 'Nuevo',   destacado: true,  orden: 0 },
-  { nombre: 'Buzo Técnico',    precio: 32000, img: 'prod-buzo.jpg',    badge: 'Último!', destacado: true,  orden: 1 },
-  { nombre: 'Short Deportivo', precio: 38000, img: 'prod-short.jpg',   badge: '',        destacado: false, orden: 2 },
-  { nombre: 'Remera Técnica',  precio: 18000, img: 'prod-remera.jpg',  badge: 'Nuevo',   destacado: true,  orden: 3 },
-  { nombre: 'Top Deportivo',   precio: 15000, img: 'prod-top.jpg',     badge: 'Nuevo',   destacado: false, orden: 4 },
+  { nombre: 'Campera Running', precio: 45000, img: 'prod-campera.jpg', badge: 'Nuevo',   destacado: true,  orden: 0, stock: 10 },
+  { nombre: 'Buzo Técnico',    precio: 32000, img: 'prod-buzo.jpg',    badge: 'Último!', destacado: true,  orden: 1, stock: 3  },
+  { nombre: 'Short Deportivo', precio: 38000, img: 'prod-short.jpg',   badge: '',        destacado: false, orden: 2, stock: 8  },
+  { nombre: 'Remera Técnica',  precio: 18000, img: 'prod-remera.jpg',  badge: 'Nuevo',   destacado: true,  orden: 3, stock: 15 },
+  { nombre: 'Top Deportivo',   precio: 15000, img: 'prod-top.jpg',     badge: 'Nuevo',   destacado: false, orden: 4, stock: 5  },
 ];
 
 var editingId = null;
 
-function fmt(n)        { return '$' + Number(n).toLocaleString('es-AR'); }
+function fmt(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+function stockLabel(s) {
+  s = typeof s !== 'undefined' ? Number(s) : '—';
+  if (s === '—') return '<span style="color:#9ca3af">sin stock cargado</span>';
+  if (s === 0)   return '<span style="color:#ef4444;font-weight:700">Sin stock</span>';
+  if (s <= 5)    return '<span style="color:#f97316;font-weight:700">' + s + ' unidades</span>';
+  return '<span style="color:#22c55e;font-weight:600">' + s + ' unidades</span>';
+}
 function getImgSrc(img){
   if (!img) return 'img/logo.jpeg';
   if (img.startsWith('data:') || img.startsWith('http')) return img;
@@ -109,7 +116,7 @@ function subscribeProductos() {
           '<img src="' + getImgSrc(p.img) + '" alt="' + p.nombre + '" onerror="this.src=\'img/logo.jpeg\'">' +
           '<div>' +
             '<p class="product-row-name">' + p.nombre + '</p>' +
-            '<p class="product-row-price">' + fmt(p.precio) + '</p>' +
+            '<p class="product-row-price">' + fmt(p.precio) + ' &nbsp;·&nbsp; ' + stockLabel(p.stock) + '</p>' +
           '</div>' +
           (p.badge ? '<span class="badge-tag">' + p.badge + '</span>' : '<span></span>') +
           '<label class="toggle-dest' + (p.destacado ? ' on' : '') + '">' +
@@ -168,6 +175,7 @@ function openModal(data, id) {
   document.getElementById('pNombre').value      = data ? data.nombre   : '';
   document.getElementById('pPrecio').value      = data ? data.precio   : '';
   document.getElementById('pBadge').value       = data ? data.badge    : '';
+  document.getElementById('pStock').value       = data ? (typeof data.stock !== 'undefined' ? data.stock : '') : '';
   document.getElementById('pTalles').value      = data ? (data.talles  || '') : '';
   document.getElementById('pColores').value     = data ? (data.colores || '') : '';
   document.getElementById('pOrden').value       = data ? data.orden    : 99;
@@ -279,6 +287,7 @@ function saveProductData(imgValue, btn) {
     nombre:    document.getElementById('pNombre').value.trim(),
     precio:    parseInt(document.getElementById('pPrecio').value, 10),
     badge:     document.getElementById('pBadge').value.trim(),
+    stock:     parseInt(document.getElementById('pStock').value, 10) || 0,
     talles:    document.getElementById('pTalles').value.trim(),
     colores:   document.getElementById('pColores').value.trim(),
     orden:     parseInt(document.getElementById('pOrden').value, 10) || 0,
