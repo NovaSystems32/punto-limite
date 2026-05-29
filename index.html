@@ -287,12 +287,20 @@
     </div>
   </footer>
 
-  <!-- SELECTOR DE TALLE -->
+  <!-- SELECTOR DE TALLE Y COLOR -->
   <div class="size-overlay" id="sizeOverlay">
     <div class="size-picker">
-      <p class="size-picker-label">Seleccioná tu talle</p>
+      <p class="size-picker-label">Personalizar prenda</p>
       <p class="size-picker-product" id="sizeProductName"></p>
-      <div class="size-buttons" id="sizeButtons"></div>
+      <div id="sizeSection" style="display:none">
+        <p class="size-picker-sublabel">Talle</p>
+        <div class="size-buttons" id="sizeButtons"></div>
+      </div>
+      <div id="colorSection" style="display:none">
+        <p class="size-picker-sublabel">Color</p>
+        <div class="color-buttons" id="colorButtons"></div>
+      </div>
+      <button class="btn-add-confirm" id="addConfirmBtn" onclick="confirmOptions()" disabled>Agregar al carrito</button>
       <button class="size-cancel" onclick="closeSizePicker()">Cancelar</button>
     </div>
   </div>

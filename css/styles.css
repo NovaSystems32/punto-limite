@@ -1531,6 +1531,70 @@ img { display: block; max-width: 100%; }
   color: var(--white);
   transform: translateY(-2px);
 }
+.size-picker-sublabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-align: center;
+  margin-bottom: 0.65rem;
+}
+.size-btn.selected {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+/* Color swatches */
+.color-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.color-swatch-wrap { text-align: center; }
+.color-btn {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto 4px;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.color-btn:hover { transform: scale(1.12); }
+.color-btn.selected {
+  border-color: var(--black);
+  transform: scale(1.12);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.color-btn-label {
+  font-size: 0.68rem;
+  color: var(--gray);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+/* Botón confirmar del picker */
+.btn-add-confirm {
+  width: 100%;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  padding: 0.9rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  margin-bottom: 0.6rem;
+  transition: background 0.2s, opacity 0.2s;
+}
+.btn-add-confirm:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-add-confirm:not(:disabled):hover { background: var(--accent); }
 .size-cancel {
   background: none; border: none;
   font-family: var(--font-body);

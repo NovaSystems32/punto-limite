@@ -74,7 +74,8 @@ function renderCard(data, docId) {
         ' data-nombre="' + data.nombre.replace(/"/g, '&quot;') + '"' +
         ' data-precio="' + data.precio + '"' +
         ' data-img="'    + (data.img || '') + '"' +
-        ' data-talles="' + (data.talles || '') + '"' +
+        ' data-talles="'  + (data.talles  || '') + '"' +
+        ' data-colores="' + (data.colores || '') + '"' +
         ' onclick="addToCart(this)">Agregar al carrito</button>' +
     '</div>' +
   '</div>';
