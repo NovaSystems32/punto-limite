@@ -217,6 +217,27 @@ function updateImgPreview(src) {
   else     { img.classList.remove('visible'); }
 }
 
+/* --- Comprimir imagen antes de subir (Canvas API) --- */
+function compressImage(file) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var MAX   = 900;  // ancho máximo en píxeles
+        var ratio = Math.min(MAX / img.width, MAX / img.height, 1);
+        var canvas = document.createElement('canvas');
+        canvas.width  = Math.round(img.width  * ratio);
+        canvas.height = Math.round(img.height * ratio);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', 0.82);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 /* --- Guardar producto --- */
 document.getElementById('productForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -226,26 +247,30 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
   btn.disabled    = true;
 
   if (file) {
-    var fileName = Date.now() + '_' + file.name.replace(/\s/g, '_');
-    var ref  = storage.ref('productos/' + fileName);
-    var task = ref.put(file);
-    task.on('state_changed',
-      function(snap) {
-        var pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
-        document.getElementById('uploadBarWrap').style.display = 'block';
-        document.getElementById('uploadBar').style.width  = pct + '%';
-        document.getElementById('uploadLabel').textContent = 'Subiendo... ' + pct + '%';
-        btn.textContent = 'Subiendo imagen ' + pct + '%...';
-      },
-      function(err) {
-        console.error(err);
-        btn.textContent = 'Error subiendo imagen';
-        btn.disabled    = false;
-      },
-      function() {
-        ref.getDownloadURL().then(function(url) { saveProductData(url, btn); });
-      }
-    );
+    btn.textContent = 'Comprimiendo imagen...';
+    compressImage(file).then(function(blob) {
+      var fileName = Date.now() + '.jpg';
+      var ref  = storage.ref('productos/' + fileName);
+      var task = ref.put(blob);
+      document.getElementById('uploadBarWrap').style.display = 'block';
+
+      task.on('state_changed',
+        function(snap) {
+          var pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
+          document.getElementById('uploadBar').style.width       = pct + '%';
+          document.getElementById('uploadLabel').textContent     = 'Subiendo... ' + pct + '%';
+          btn.textContent = 'Subiendo ' + pct + '%...';
+        },
+        function(err) {
+          console.error(err);
+          btn.textContent = 'Error al subir la imagen';
+          btn.disabled    = false;
+        },
+        function() {
+          ref.getDownloadURL().then(function(url) { saveProductData(url, btn); });
+        }
+      );
+    });
   } else {
     saveProductData(document.getElementById('pImgUrl').value.trim(), btn);
   }
