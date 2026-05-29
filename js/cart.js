@@ -1,26 +1,15 @@
 /* ============================================================
    PUNTO LÍMITE — cart.js
    Carrito de compras + Firebase Firestore
+   (Firebase se inicializa en firebase-init.js)
    ============================================================ */
-
-/* --- Firebase init --- */
-const firebaseConfig = {
-  apiKey:            "AIzaSyDikKPo-jMlmJF0X7Cpq9GtTuZYnbexIS0",
-  authDomain:        "punto-limite.firebaseapp.com",
-  projectId:         "punto-limite",
-  storageBucket:     "punto-limite.firebasestorage.app",
-  messagingSenderId: "217001102203",
-  appId:             "1:217001102203:web:7138e31e3b14977db7cbde"
-};
-firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
 
 /* --- Estado del carrito (se guarda en el navegador) --- */
 var cart = JSON.parse(localStorage.getItem('pl_cart') || '[]');
 
 /* --- Helpers --- */
 function formatPrice(n) {
-  return '$' + n.toLocaleString('es-AR');
+  return '$' + Number(n).toLocaleString('es-AR');
 }
 function saveCart() {
   localStorage.setItem('pl_cart', JSON.stringify(cart));
@@ -38,28 +27,25 @@ function renderCart() {
   var totalEl = document.getElementById('cartTotal');
   var countEl = document.getElementById('cartCount');
   var badge   = document.getElementById('cartBadge');
-  var count   = getCount();
+  if (!list) return;
 
-  /* badge flotante */
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
+  var count = getCount();
+  badge.textContent    = count;
+  badge.style.display  = count > 0 ? 'flex' : 'none';
+  countEl.textContent  = count + ' producto' + (count !== 1 ? 's' : '');
 
-  /* contador en header */
-  countEl.textContent = count + ' producto' + (count !== 1 ? 's' : '');
-
-  /* lista vacía */
   if (cart.length === 0) {
-    list.innerHTML = '<p class="cart-empty"><span>🛒</span>Tu carrito está vacío</p>';
+    list.innerHTML  = '<p class="cart-empty"><span>🛒</span>Tu carrito está vacío</p>';
     totalEl.textContent = formatPrice(0);
     return;
   }
 
-  /* items */
   list.innerHTML = cart.map(function(item, i) {
+    var imgSrc = item.img && item.img.startsWith('http') ? item.img : 'img/' + item.img;
     return '<div class="cart-item">' +
-      '<img src="img/' + item.img + '" alt="' + item.nombre + '">' +
+      '<img src="' + imgSrc + '" alt="' + item.nombre + '">' +
       '<div class="cart-item-info">' +
-        '<p class="cart-item-name">' + item.nombre + '</p>' +
+        '<p class="cart-item-name">'  + item.nombre           + '</p>' +
         '<p class="cart-item-price">' + formatPrice(item.precio) + '</p>' +
       '</div>' +
       '<div class="cart-item-qty">' +
@@ -74,19 +60,23 @@ function renderCart() {
   totalEl.textContent = formatPrice(getTotal());
 }
 
-/* --- Agregar al carrito --- */
-function addToCart(index) {
-  var p        = productos[index];
-  var existing = cart.find(function(item) { return item.nombre === p.nombre; });
+/* --- Agregar al carrito (llamado desde onclick del botón de product card) --- */
+function addToCart(btn) {
+  var id     = btn.getAttribute('data-id');
+  var nombre = btn.getAttribute('data-nombre');
+  var precio = parseInt(btn.getAttribute('data-precio'), 10);
+  var img    = btn.getAttribute('data-img');
+
+  var existing = cart.find(function(item) { return item.id === id; });
   if (existing) {
     existing.cantidad++;
   } else {
-    cart.push({ nombre: p.nombre, precio: p.precio, img: p.img, cantidad: 1 });
+    cart.push({ id: id, nombre: nombre, precio: precio, img: img, cantidad: 1 });
   }
   saveCart();
   renderCart();
   openCart();
-  showToast('"' + p.nombre + '" agregado al carrito');
+  showToast('"' + nombre + '" agregado al carrito');
 }
 
 /* --- Cambiar cantidad --- */
@@ -128,6 +118,7 @@ function showView(id) {
 /* --- Toast --- */
 function showToast(msg) {
   var t = document.getElementById('cartToast');
+  if (!t) return;
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(function() { t.classList.remove('show'); }, 2600);
@@ -147,16 +138,11 @@ function submitOrder(e) {
   btn.disabled    = true;
 
   var pedido = {
-    fecha:    firebase.firestore.FieldValue.serverTimestamp(),
-    estado:   'pendiente',
-    cliente:  { nombre: nombre, telefono: telefono, notas: notas },
-    items:    cart.map(function(item) {
-      return {
-        nombre:   item.nombre,
-        precio:   item.precio,
-        cantidad: item.cantidad,
-        subtotal: item.precio * item.cantidad
-      };
+    fecha:   firebase.firestore.FieldValue.serverTimestamp(),
+    estado:  'pendiente',
+    cliente: { nombre: nombre, telefono: telefono, notas: notas },
+    items:   cart.map(function(item) {
+      return { nombre: item.nombre, precio: item.precio, cantidad: item.cantidad, subtotal: item.precio * item.cantidad };
     }),
     total: getTotal()
   };
@@ -191,7 +177,6 @@ document.getElementById('checkoutBack').addEventListener('click', function() {
 });
 
 document.getElementById('checkoutForm').addEventListener('submit', submitOrder);
-
 document.getElementById('continueBtn').addEventListener('click', closeCart);
 
 /* --- Arrancar --- */

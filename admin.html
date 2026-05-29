@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Punto Límite</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- ===== LOGIN ===== -->
+  <div class="login-screen" id="loginScreen" style="display:none;">
+    <div class="login-box">
+      <img src="img/logo.jpeg" alt="Punto Límite" class="login-logo">
+      <h1>PUNTO LÍMITE</h1>
+      <p>Panel de Administración</p>
+      <form id="loginForm">
+        <input type="password" id="loginPass" placeholder="Contraseña" required autocomplete="current-password">
+        <button type="submit">Ingresar</button>
+        <p class="login-error" id="loginError">Contraseña incorrecta</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="admin-screen" id="adminScreen">
+
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <img src="img/logo.jpeg" alt="logo" class="admin-header-logo">
+        <h2>ADMINISTRACIÓN</h2>
+      </div>
+      <div class="admin-header-right">
+        <span>Punto Límite</span>
+        <button class="btn-logout" id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+
+      <!-- ===== PRODUCTOS ===== -->
+      <div class="admin-section">
+        <div class="admin-section-header">
+          <h3>PRODUCTOS</h3>
+          <button class="btn-primary" id="addProductBtn">+ Agregar producto</button>
+        </div>
+
+        <!-- Banner para cargar productos de ejemplo la primera vez -->
+        <div class="seed-banner" id="seedBanner">
+          <p><strong>No hay productos aún.</strong> ¿Querés cargar los productos de ejemplo para empezar?</p>
+          <button class="btn-seed" id="seedBtn">Cargar productos de ejemplo</button>
+        </div>
+
+        <div class="product-list" id="adminProductList">
+          <p class="empty-list">Cargando...</p>
+        </div>
+      </div>
+
+      <!-- ===== PEDIDOS ===== -->
+      <div class="admin-section">
+        <div class="admin-section-header">
+          <h3>PEDIDOS</h3>
+          <button class="btn-primary" id="refreshOrders">↻ Actualizar</button>
+        </div>
+        <div id="adminOrderList">
+          <p class="empty-list">Cargando pedidos...</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===== MODAL PRODUCTO ===== -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h4 id="modalTitle">Agregar producto</h4>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <form id="productForm">
+        <div class="modal-body">
+
+          <div class="form-row">
+            <label>Nombre del producto *</label>
+            <input type="text" id="pNombre" placeholder="Ej: Campera Running" required>
+          </div>
+
+          <div class="form-row">
+            <label>Precio (solo números) *</label>
+            <input type="number" id="pPrecio" placeholder="Ej: 45000" min="0" required>
+          </div>
+
+          <div class="form-row">
+            <label>Etiqueta (opcional)</label>
+            <input type="text" id="pBadge" placeholder='Ej: "Nuevo", "Último!", "Oferta"'>
+          </div>
+
+          <div class="form-row">
+            <label>Imagen — subir desde la computadora</label>
+            <input type="file" id="pImgFile" accept="image/*">
+            <div class="upload-bar-wrap" id="uploadBarWrap">
+              <div class="upload-bar-bg"><div class="upload-bar" id="uploadBar"></div></div>
+              <p class="upload-label" id="uploadLabel"></p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>— o pegar una URL de imagen</label>
+            <input type="text" id="pImgUrl" placeholder="https://...">
+            <div class="img-preview-wrap">
+              <img class="img-preview" id="imgPreview" alt="Vista previa">
+              <p class="img-hint">La imagen se ve así en la tienda.</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Orden de aparición</label>
+            <input type="number" id="pOrden" value="99" min="0">
+          </div>
+
+          <label class="form-row-check">
+            <input type="checkbox" id="pDestacado">
+            Mostrar en la página de inicio
+          </label>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn-save" id="saveBtn">Guardar producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

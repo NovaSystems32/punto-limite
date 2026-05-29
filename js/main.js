@@ -1,66 +1,53 @@
 /* ============================================================
    PUNTO LÍMITE — main.js
-   Animaciones premium + microinteracciones
-   ============================================================ */
+   Animaciones + carga de productos desde Firebase
+   ============================================================
 
-/* ============================================================
-   PRODUCTOS — Editá esta lista para agregar, quitar o
-   modificar productos. Campos:
-     nombre  → nombre del producto
-     precio  → precio (ej: "$45.000")
-     img     → nombre del archivo en la carpeta img/
-     badge   → etiqueta opcional ("Nuevo", "Último!", etc.)
-               dejalo en "" si no querés etiqueta
+   PARA AGREGAR UN PRODUCTO:
+   Usá el panel de administración en admin.html
    ============================================================ */
-// destacado: true  → aparece en el inicio
-// destacado: false → solo aparece en el catálogo completo
-const productos = [
-  { nombre: 'Campera Running', precio: 45000, img: 'prod-campera.jpg', badge: 'Nuevo',   destacado: true  },
-  { nombre: 'Buzo Técnico',    precio: 32000, img: 'prod-buzo.jpg',    badge: 'Último!', destacado: true  },
-  { nombre: 'Short Deportivo', precio: 38000, img: 'prod-short.jpg',   badge: '',        destacado: false },
-  { nombre: 'Remera Técnica',  precio: 18000, img: 'prod-remera.jpg',  badge: 'Nuevo',   destacado: true  },
-  { nombre: 'Top Deportivo',   precio: 15000, img: 'prod-top.jpg',     badge: 'Nuevo',   destacado: false },
-];
 
 /* --- Navbar scroll --- */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-}, { passive: true });
+var navbar = document.getElementById('navbar');
+if (navbar) {
+  window.addEventListener('scroll', function() {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+}
 
 /* --- Menú mobile --- */
-const navToggle = document.getElementById('navToggle');
-const navLinks  = document.getElementById('navLinks');
+var navToggle = document.getElementById('navToggle');
+var navLinks  = document.getElementById('navLinks');
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', function() {
+    var open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.nav-links a').forEach(function(a) {
+    a.addEventListener('click', function() { navLinks.classList.remove('open'); });
+  });
+}
 
-navToggle.addEventListener('click', () => {
-  const open = navLinks.classList.toggle('open');
-  navToggle.setAttribute('aria-expanded', open);
-});
-document.querySelectorAll('.nav-links a').forEach(a =>
-  a.addEventListener('click', () => navLinks.classList.remove('open'))
-);
-
-/* --- Animaciones de entrada del Hero (stagger) --- */
+/* --- Animaciones de entrada del Hero --- */
 function animateHero() {
-  const titleSolid   = document.querySelector('.hero-title__solid');
-  const titleOutline = document.querySelector('.hero-title__outline');
-  const eyebrow      = document.querySelector('.hero-eyebrow');
-  const sub          = document.querySelector('.hero-sub');
-  const actions      = document.querySelector('.hero-actions');
-  const stats        = document.querySelector('.hero-stats');
-
-  const sequence = [eyebrow, titleSolid, titleOutline, sub, actions, stats];
-
-  sequence.forEach((el, i) => {
+  var sequence = [
+    document.querySelector('.hero-eyebrow'),
+    document.querySelector('.hero-title__solid'),
+    document.querySelector('.hero-title__outline'),
+    document.querySelector('.hero-sub'),
+    document.querySelector('.hero-actions'),
+    document.querySelector('.hero-stats')
+  ];
+  sequence.forEach(function(el, i) {
     if (!el) return;
-    setTimeout(() => el.classList.add('entered'), 100 + i * 120);
+    setTimeout(function() { el.classList.add('entered'); }, 100 + i * 120);
   });
 }
 window.addEventListener('load', animateHero);
 
-/* --- Fade-in al hacer scroll (IntersectionObserver) --- */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+/* --- Fade-in al hacer scroll --- */
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
       observer.unobserve(entry.target);
@@ -68,118 +55,127 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
 
-/* --- Renderiza las cards de productos --- */
-function renderGrid(el, lista) {
-  el.innerHTML = lista.map((p, i) => `
-    <div class="product-card fade-in">
-      <div class="product-img">
-        <img src="img/${p.img}" alt="${p.nombre}" loading="lazy">
-        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-      </div>
-      <div class="product-info">
-        <h3>${p.nombre}</h3>
-        <p class="product-price">$${p.precio.toLocaleString('es-AR')}</p>
-        <button class="btn-add-cart" onclick="addToCart(${p._idx})">Agregar al carrito</button>
-      </div>
-    </div>
-  `).join('');
-  el.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+/* --- Render de una card de producto --- */
+function renderCard(data, docId) {
+  var imgSrc = data.img && data.img.startsWith('http') ? data.img : 'img/' + data.img;
+  return '<div class="product-card fade-in">' +
+    '<div class="product-img">' +
+      '<img src="' + imgSrc + '" alt="' + data.nombre + '" loading="lazy">' +
+      (data.badge ? '<span class="product-badge">' + data.badge + '</span>' : '') +
+    '</div>' +
+    '<div class="product-info">' +
+      '<h3>' + data.nombre + '</h3>' +
+      '<p class="product-price">$' + Number(data.precio).toLocaleString('es-AR') + '</p>' +
+      '<button class="btn-add-cart"' +
+        ' data-id="'     + docId      + '"' +
+        ' data-nombre="' + data.nombre.replace(/"/g, '&quot;') + '"' +
+        ' data-precio="' + data.precio + '"' +
+        ' data-img="'    + data.img    + '"' +
+        ' onclick="addToCart(this)">Agregar al carrito</button>' +
+    '</div>' +
+  '</div>';
 }
 
-// Guardar el índice real del array en cada producto
-productos.forEach((p, i) => p._idx = i);
+/* --- Cargar productos desde Firestore --- */
+function loadToGrid(gridId, soloDestacados) {
+  var el = document.getElementById(gridId);
+  if (!el) return;
 
-// Inicio: solo destacados
-const grid = document.getElementById('productsGrid');
-if (grid) {
-  renderGrid(grid, productos.filter(p => p.destacado));
+  el.innerHTML = '<p class="catalog-loading">Cargando productos...</p>';
+
+  db.collection('productos').orderBy('orden').get()
+    .then(function(snap) {
+      var docs = snap.docs;
+      if (soloDestacados) {
+        docs = docs.filter(function(doc) { return doc.data().destacado === true; });
+      }
+      if (docs.length === 0) {
+        el.innerHTML = '<p style="color:var(--gray);padding:2rem 0;grid-column:1/-1">Sin productos disponibles.</p>';
+        return;
+      }
+      el.innerHTML = docs.map(function(doc) {
+        return renderCard(doc.data(), doc.id);
+      }).join('');
+      el.querySelectorAll('.fade-in').forEach(function(card) { observer.observe(card); });
+    })
+    .catch(function(err) {
+      console.error('Error cargando productos:', err);
+      el.innerHTML = '<p style="color:var(--gray);padding:2rem 0;grid-column:1/-1">Error al cargar productos.</p>';
+    });
 }
 
-// Catálogo: todos
-const gridAll = document.getElementById('productsGridAll');
-if (gridAll) {
-  renderGrid(gridAll, productos);
-}
+loadToGrid('productsGrid',    true);   // inicio: solo destacados
+loadToGrid('productsGridAll', false);  // catálogo: todos
 
 /* --- Counter animado para stats del hero --- */
-function animateCounter(el, target, duration = 1200) {
-  const start = performance.now();
-  const isDecimal = target % 1 !== 0;
-
-  const update = (now) => {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-    const value = eased * target;
-
-    el.textContent = isDecimal
-      ? value.toFixed(0)
-      : Math.floor(value).toLocaleString('es-AR');
-
+function animateCounter(el, target, duration) {
+  duration = duration || 1200;
+  var start = performance.now();
+  var update = function(now) {
+    var elapsed  = now - start;
+    var progress = Math.min(elapsed / duration, 1);
+    var eased    = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target).toLocaleString('es-AR');
     if (progress < 1) requestAnimationFrame(update);
     else el.textContent = target.toLocaleString('es-AR');
   };
   requestAnimationFrame(update);
 }
 
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+var statsObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
     if (!entry.isIntersecting) return;
-    entry.target.querySelectorAll('.hero-stat strong').forEach(strong => {
-      const raw   = strong.textContent.replace(/[^0-9]/g, '');
-      const num   = parseInt(raw, 10);
+    entry.target.querySelectorAll('.hero-stat strong').forEach(function(strong) {
+      var num = parseInt(strong.textContent.replace(/[^0-9]/g, ''), 10);
       if (!isNaN(num) && num > 1) animateCounter(strong, num);
     });
     statsObserver.unobserve(entry.target);
   });
 }, { threshold: 0.5 });
 
-const heroStats = document.querySelector('.hero-stats');
+var heroStats = document.querySelector('.hero-stats');
 if (heroStats) statsObserver.observe(heroStats);
 
 /* --- Formulario de contacto --- */
-const form = document.getElementById('contactForm');
+var form = document.getElementById('contactForm');
 if (form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
-    const msg = document.getElementById('formMsg');
-    const btn = form.querySelector('button[type="submit"]');
-
+    var msg = document.getElementById('formMsg');
+    var btn = form.querySelector('button[type="submit"]');
     btn.textContent = 'Enviando...';
-    btn.disabled = true;
-
-    setTimeout(() => {
+    btn.disabled    = true;
+    setTimeout(function() {
       msg.textContent = '¡Mensaje enviado! Te respondemos pronto.';
       form.reset();
       btn.textContent = 'Enviar Mensaje';
-      btn.disabled = false;
-      setTimeout(() => { msg.textContent = ''; }, 5000);
+      btn.disabled    = false;
+      setTimeout(function() { msg.textContent = ''; }, 5000);
     }, 900);
   });
 }
 
-/* --- Parallax sutil en la palabra de fondo del hero --- */
-const bgWord = document.querySelector('.hero-bg__word');
+/* --- Parallax en la palabra de fondo del hero --- */
+var bgWord = document.querySelector('.hero-bg__word');
 if (bgWord) {
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y < window.innerHeight) {
-      bgWord.style.transform = `translateY(${y * 0.15}px)`;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY < window.innerHeight) {
+      bgWord.style.transform = 'translateY(' + window.scrollY * 0.15 + 'px)';
     }
   }, { passive: true });
 }
 
-/* --- Cursor magnético suave en botones hero --- */
-document.querySelectorAll('.hbtn').forEach(btn => {
-  btn.addEventListener('mousemove', (e) => {
-    const rect = btn.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width  / 2;
-    const y = e.clientY - rect.top  - rect.height / 2;
-    btn.style.transform = `translate(${x * 0.12}px, ${y * 0.18}px) translateY(-2px)`;
+/* --- Cursor magnético en botones hero --- */
+document.querySelectorAll('.hbtn').forEach(function(btn) {
+  btn.addEventListener('mousemove', function(e) {
+    var rect = btn.getBoundingClientRect();
+    var x = e.clientX - rect.left - rect.width  / 2;
+    var y = e.clientY - rect.top  - rect.height / 2;
+    btn.style.transform = 'translate(' + (x * 0.12) + 'px, ' + (y * 0.18) + 'px) translateY(-2px)';
   });
-  btn.addEventListener('mouseleave', () => {
+  btn.addEventListener('mouseleave', function() {
     btn.style.transform = '';
   });
 });
