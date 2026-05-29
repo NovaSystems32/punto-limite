@@ -811,6 +811,21 @@ img { display: block; max-width: 100%; }
   opacity: 0.12;
   z-index: -1;
 }
+.about-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72%;
+  max-width: 340px;
+  border-radius: 50%;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  z-index: 1;
+}
+.about-logo:hover {
+  transform: translate(-50%, -52%) scale(1.04);
+  box-shadow: 0 24px 60px rgba(0,191,165,0.18), 0 8px 24px rgba(0,0,0,0.1);
+}
 .about-label {
   position: absolute;
   bottom: 2rem; left: 2rem;
@@ -818,6 +833,7 @@ img { display: block; max-width: 100%; }
   font-size: 1.1rem;
   letter-spacing: 0.15em;
   color: rgba(0,0,0,0.18);
+  z-index: 2;
 }
 .about-text p {
   color: var(--gray);
