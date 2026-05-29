@@ -1448,6 +1448,85 @@ img { display: block; max-width: 100%; }
 }
 .btn-add-cart:hover { background: var(--accent); transform: translateY(-1px); }
 
+/* ============================================================
+   SELECTOR DE TALLE
+   ============================================================ */
+.size-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s var(--ease-out);
+}
+.size-overlay.open { opacity: 1; pointer-events: all; }
+
+.size-picker {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2rem 1.8rem 1.6rem;
+  width: min(360px, 100%);
+  text-align: center;
+  transform: translateY(16px);
+  transition: transform 0.28s var(--ease-out);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+}
+.size-overlay.open .size-picker { transform: translateY(0); }
+
+.size-picker-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.4rem;
+}
+.size-picker-product {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.4rem;
+  line-height: 1.2;
+}
+.size-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+.size-btn {
+  border: 2px solid var(--crudo-dark);
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  width: 58px; height: 58px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.15s;
+}
+.size-btn:hover {
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+.size-cancel {
+  background: none; border: none;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--gray);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0.3rem;
+  transition: color 0.15s;
+}
+.size-cancel:hover { color: var(--black); }
+
 .btn-outline-dark {
   display: inline-block;
   border: 2px solid var(--black);

@@ -45,7 +45,7 @@ function renderCart() {
     return '<div class="cart-item">' +
       '<img src="' + imgSrc + '" alt="' + item.nombre + '">' +
       '<div class="cart-item-info">' +
-        '<p class="cart-item-name">'  + item.nombre           + '</p>' +
+        '<p class="cart-item-name">'  + item.nombre + (item.talle ? ' <span style="color:var(--accent);font-size:0.78rem">Talle ' + item.talle + '</span>' : '') + '</p>' +
         '<p class="cart-item-price">' + formatPrice(item.precio) + '</p>' +
       '</div>' +
       '<div class="cart-item-qty">' +
@@ -60,9 +60,37 @@ function renderCart() {
   totalEl.textContent = formatPrice(getTotal());
 }
 
-/* --- Agregar al carrito (llamado desde onclick del botón de product card) --- */
+/* --- Selector de talle --- */
+var _pendingBtn = null;
+
 function addToCart(btn) {
-  var id     = btn.getAttribute('data-id');
+  var talles = (btn.getAttribute('data-talles') || '').trim();
+  if (talles) {
+    _pendingBtn = btn;
+    document.getElementById('sizeProductName').textContent = btn.getAttribute('data-nombre');
+    var buttons = talles.split(',').map(function(t) {
+      t = t.trim();
+      return '<button class="size-btn" onclick="confirmSize(\'' + t + '\')">' + t + '</button>';
+    }).join('');
+    document.getElementById('sizeButtons').innerHTML = buttons;
+    document.getElementById('sizeOverlay').classList.add('open');
+  } else {
+    doAddToCart(btn, null);
+  }
+}
+
+function confirmSize(talle) {
+  closeSizePicker();
+  if (_pendingBtn) { doAddToCart(_pendingBtn, talle); _pendingBtn = null; }
+}
+
+function closeSizePicker() {
+  document.getElementById('sizeOverlay').classList.remove('open');
+}
+
+function doAddToCart(btn, talle) {
+  var docId  = btn.getAttribute('data-id');
+  var id     = talle ? docId + '_' + talle : docId;
   var nombre = btn.getAttribute('data-nombre');
   var precio = parseInt(btn.getAttribute('data-precio'), 10);
   var img    = btn.getAttribute('data-img');
@@ -71,12 +99,14 @@ function addToCart(btn) {
   if (existing) {
     existing.cantidad++;
   } else {
-    cart.push({ id: id, nombre: nombre, precio: precio, img: img, cantidad: 1 });
+    var item = { id: id, nombre: nombre, precio: precio, img: img, cantidad: 1 };
+    if (talle) item.talle = talle;
+    cart.push(item);
   }
   saveCart();
   renderCart();
   openCart();
-  showToast('"' + nombre + '" agregado al carrito');
+  showToast(talle ? '"' + nombre + '" talle ' + talle + ' agregado ✓' : '"' + nombre + '" agregado al carrito ✓');
 }
 
 /* --- Cambiar cantidad --- */
@@ -142,7 +172,7 @@ function submitOrder(e) {
     estado:  'pendiente',
     cliente: { nombre: nombre, telefono: telefono, notas: notas },
     items:   cart.map(function(item) {
-      return { nombre: item.nombre, precio: item.precio, cantidad: item.cantidad, subtotal: item.precio * item.cantidad };
+      return { nombre: item.nombre, talle: item.talle || 'único', precio: item.precio, cantidad: item.cantidad, subtotal: item.precio * item.cantidad };
     }),
     total: getTotal()
   };
