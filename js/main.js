@@ -3,6 +3,22 @@
    Animaciones premium + microinteracciones
    ============================================================ */
 
+/* ============================================================
+   PRODUCTOS — Editá esta lista para agregar, quitar o
+   modificar productos. Campos:
+     nombre  → nombre del producto
+     precio  → precio (ej: "$45.000")
+     img     → nombre del archivo en la carpeta img/
+     badge   → etiqueta opcional ("Nuevo", "Último!", etc.)
+               dejalo en "" si no querés etiqueta
+   ============================================================ */
+const productos = [
+  { nombre: 'Campera Running', precio: '$45.000', img: 'prod-campera.jpg', badge: 'Nuevo'   },
+  { nombre: 'Buzo Técnico',    precio: '$32.000', img: 'prod-buzo.jpg',    badge: 'Último!' },
+  { nombre: 'Short Deportivo', precio: '$38.000', img: 'prod-short.jpg',   badge: ''        },
+  { nombre: 'Remera Técnica',  precio: '$18.000', img: 'prod-remera.jpg',  badge: 'Nuevo'   },
+];
+
 /* --- Navbar scroll --- */
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -23,7 +39,6 @@ document.querySelectorAll('.nav-links a').forEach(a =>
 
 /* --- Animaciones de entrada del Hero (stagger) --- */
 function animateHero() {
-  const targets = document.querySelectorAll('[data-enter]');
   const titleSolid   = document.querySelector('.hero-title__solid');
   const titleOutline = document.querySelector('.hero-title__outline');
   const eyebrow      = document.querySelector('.hero-eyebrow');
@@ -51,6 +66,27 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* --- Renderiza las cards de productos automáticamente --- */
+const grid = document.getElementById('productsGrid');
+if (grid) {
+  grid.innerHTML = productos.map(p => `
+    <div class="product-card fade-in">
+      <div class="product-img">
+        <img src="img/${p.img}" alt="${p.nombre}" loading="lazy">
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="product-info">
+        <h3>${p.nombre}</h3>
+        <p class="product-price">${p.precio}</p>
+        <a href="#contacto" class="btn-link">Consultar &rarr;</a>
+      </div>
+    </div>
+  `).join('');
+
+  /* re-observar las nuevas cards para el fade-in */
+  grid.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+}
 
 /* --- Counter animado para stats del hero --- */
 function animateCounter(el, target, duration = 1200) {
