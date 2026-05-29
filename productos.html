@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo — Punto Límite</title>
+  <meta name="description" content="Catálogo completo de indumentaria deportiva Punto Límite.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="img/logo.jpeg" alt="Punto Límite" class="nav-logo-img">
+        <span class="nav-logo-name">PUNTO LÍMITE</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#productos">Inicio</a></li>
+        <li><a href="productos.html" class="active">Catálogo</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- CABECERA DE PÁGINA -->
+  <section class="catalog-hero">
+    <div class="container">
+      <p class="section-tag">Colección 26</p>
+      <h1 class="catalog-title">Catálogo Completo</h1>
+      <p class="catalog-sub">Todos los productos disponibles</p>
+    </div>
+  </section>
+
+  <!-- GRID DE TODOS LOS PRODUCTOS -->
+  <section class="section-productos">
+    <div class="container">
+      <div class="products-grid" id="productsGridAll"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img src="img/logo.jpeg" alt="Punto Límite" class="footer-logo-img">
+          <p class="footer-logo">PUNTO LÍMITE</p>
+          <p class="footer-desc">Indumentaria deportiva de alta performance. Sin límites.</p>
+        </div>
+        <div>
+          <p class="footer-heading">Navegación</p>
+          <ul>
+            <li><a href="index.html#productos">Inicio</a></li>
+            <li><a href="productos.html">Catálogo</a></li>
+            <li><a href="index.html#nosotros">Nosotros</a></li>
+            <li><a href="index.html#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-heading">Redes Sociales</p>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">TikTok</a></li>
+            <li><a href="#">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Punto Límite. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART OVERLAY -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- CART SIDEBAR -->
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Carrito de compras">
+    <div class="cart-header">
+      <h3>CARRITO <span id="cartCount">0 productos</span></h3>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="cart-main" id="cartMain" style="display:flex;">
+      <div class="cart-list" id="cartList"></div>
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <strong id="cartTotal">$0</strong>
+        </div>
+        <button class="btn-checkout" id="checkoutBtn">Finalizar pedido</button>
+      </div>
+    </div>
+    <div class="cart-checkout" id="cartCheckout" style="display:none;">
+      <button class="cart-back" id="checkoutBack">← Volver al carrito</button>
+      <h4>Tus datos</h4>
+      <p>Completá el formulario y te contactamos para confirmar.</p>
+      <form class="checkout-form" id="checkoutForm">
+        <input type="text" id="checkoutNombre"   placeholder="Tu nombre completo" required>
+        <input type="tel"  id="checkoutTelefono" placeholder="Tu teléfono / WhatsApp" required>
+        <textarea id="checkoutNotas" rows="3" placeholder="Talle, color u otras aclaraciones (opcional)"></textarea>
+        <button type="submit" id="orderBtn">Confirmar pedido</button>
+      </form>
+    </div>
+    <div class="cart-success" id="cartSuccess" style="display:none;">
+      <div class="cart-success-icon">✓</div>
+      <h4>¡Pedido recibido!</h4>
+      <p>Guardamos tu pedido. Te contactamos pronto al número que dejaste para coordinar el pago y envío.</p>
+      <button id="continueBtn">Seguir comprando</button>
+    </div>
+  </aside>
+
+  <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+    🛒 <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+  <div class="cart-toast" id="cartToast"></div>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+</html>
