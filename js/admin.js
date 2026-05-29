@@ -221,24 +221,29 @@ function updateImgPreview(src) {
   else     { img.classList.remove('visible'); }
 }
 
-/* --- Comprimir imagen a base64 (sin upload a Storage) --- */
+/* --- Comprimir imagen a base64 --- */
 function compressToBase64(file) {
-  return new Promise(function(resolve) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var img = new Image();
-      img.onload = function() {
-        var MAX    = 700;   // px máximos (ajusta calidad vs tamaño)
-        var ratio  = Math.min(MAX / img.width, MAX / img.height, 1);
-        var canvas = document.createElement('canvas');
-        canvas.width  = Math.round(img.width  * ratio);
-        canvas.height = Math.round(img.height * ratio);
-        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', 0.75)); // base64 lista
-      };
-      img.src = e.target.result;
+  return new Promise(function(resolve, reject) {
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onerror = function() { URL.revokeObjectURL(url); reject(new Error('No se pudo leer la imagen')); };
+    img.onload  = function() {
+      URL.revokeObjectURL(url);
+      var MAX    = 480;  // px máximos — pequeño = rápido
+      var ratio  = Math.min(MAX / img.width, MAX / img.height, 1);
+      var canvas = document.createElement('canvas');
+      canvas.width  = Math.round(img.width  * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      var b64 = canvas.toDataURL('image/jpeg', 0.68);
+      var kb  = Math.round(b64.length * 0.75 / 1024);
+      if (b64.length > 900000) {   // > ~900KB → Firestore lo rechaza
+        reject(new Error('Imagen muy grande (' + kb + ' KB). Usá una foto más pequeña.'));
+      } else {
+        resolve(b64);
+      }
     };
-    reader.readAsDataURL(file);
+    img.src = url;
   });
 }
 
@@ -251,14 +256,16 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
   btn.disabled    = true;
 
   if (file) {
-    btn.textContent = 'Procesando imagen...';
+    btn.textContent = 'Comprimiendo...';
     compressToBase64(file).then(function(base64) {
-      // la imagen queda guardada directo en Firestore — sin uploads lentos
+      btn.textContent = 'Guardando...';
       saveProductData(base64, btn);
     }).catch(function(err) {
       console.error(err);
-      btn.textContent = 'Error con la imagen';
-      btn.disabled    = false;
+      btn.textContent      = err.message || 'Error con la imagen';
+      btn.style.background = '#ef4444';
+      btn.disabled         = false;
+      showAdminToast(err.message || 'Error con la imagen', 'err');
     });
   } else {
     saveProductData(document.getElementById('pImgUrl').value.trim(), btn);
