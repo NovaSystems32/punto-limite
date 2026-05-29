@@ -282,6 +282,64 @@
     </div>
   </footer>
 
+  <!-- CART OVERLAY -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- CART SIDEBAR -->
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Carrito de compras">
+
+    <div class="cart-header">
+      <h3>CARRITO <span id="cartCount">0 productos</span></h3>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <!-- Vista 1: lista de productos -->
+    <div class="cart-main" id="cartMain" style="display:flex;">
+      <div class="cart-list" id="cartList"></div>
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <strong id="cartTotal">$0</strong>
+        </div>
+        <button class="btn-checkout" id="checkoutBtn">Finalizar pedido</button>
+      </div>
+    </div>
+
+    <!-- Vista 2: formulario -->
+    <div class="cart-checkout" id="cartCheckout" style="display:none;">
+      <button class="cart-back" id="checkoutBack">← Volver al carrito</button>
+      <h4>Tus datos</h4>
+      <p>Completá el formulario y te contactamos para confirmar.</p>
+      <form class="checkout-form" id="checkoutForm">
+        <input type="text"  id="checkoutNombre"   placeholder="Tu nombre completo" required>
+        <input type="tel"   id="checkoutTelefono" placeholder="Tu teléfono / WhatsApp" required>
+        <textarea id="checkoutNotas" rows="3" placeholder="Talle, color u otras aclaraciones (opcional)"></textarea>
+        <button type="submit" id="orderBtn">Confirmar pedido</button>
+      </form>
+    </div>
+
+    <!-- Vista 3: éxito -->
+    <div class="cart-success" id="cartSuccess" style="display:none;">
+      <div class="cart-success-icon">✓</div>
+      <h4>¡Pedido recibido!</h4>
+      <p>Guardamos tu pedido. Te contactamos pronto al número que dejaste para coordinar el pago y envío.</p>
+      <button id="continueBtn">Seguir comprando</button>
+    </div>
+
+  </aside>
+
+  <!-- BOTÓN FLOTANTE -->
+  <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+    🛒 <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+
+  <!-- TOAST -->
+  <div class="cart-toast" id="cartToast"></div>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
 </body>
 </html>

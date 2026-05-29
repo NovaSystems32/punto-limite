@@ -13,11 +13,11 @@
                dejalo en "" si no querés etiqueta
    ============================================================ */
 const productos = [
-  { nombre: 'Campera Running', precio: '$45.000', img: 'prod-campera.jpg', badge: 'Nuevo'   },
-  { nombre: 'Buzo Técnico',    precio: '$32.000', img: 'prod-buzo.jpg',    badge: 'Último!' },
-  { nombre: 'Short Deportivo', precio: '$38.000', img: 'prod-short.jpg',   badge: ''        },
-  { nombre: 'Remera Técnica',  precio: '$18.000', img: 'prod-remera.jpg',  badge: 'Nuevo'   },
-  { nombre: 'Top Deportivo',   precio: '$15.000', img: 'prod-top.jpg',     badge: 'Nuevo'   },
+  { nombre: 'Campera Running', precio: 45000, img: 'prod-campera.jpg', badge: 'Nuevo'   },
+  { nombre: 'Buzo Técnico',    precio: 32000, img: 'prod-buzo.jpg',    badge: 'Último!' },
+  { nombre: 'Short Deportivo', precio: 38000, img: 'prod-short.jpg',   badge: ''        },
+  { nombre: 'Remera Técnica',  precio: 18000, img: 'prod-remera.jpg',  badge: 'Nuevo'   },
+  { nombre: 'Top Deportivo',   precio: 15000, img: 'prod-top.jpg',     badge: 'Nuevo'   },
 ];
 
 /* --- Navbar scroll --- */
@@ -71,7 +71,7 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 /* --- Renderiza las cards de productos automáticamente --- */
 const grid = document.getElementById('productsGrid');
 if (grid) {
-  grid.innerHTML = productos.map(p => `
+  grid.innerHTML = productos.map((p, i) => `
     <div class="product-card fade-in">
       <div class="product-img">
         <img src="img/${p.img}" alt="${p.nombre}" loading="lazy">
@@ -79,8 +79,8 @@ if (grid) {
       </div>
       <div class="product-info">
         <h3>${p.nombre}</h3>
-        <p class="product-price">${p.precio}</p>
-        <a href="#contacto" class="btn-link">Consultar &rarr;</a>
+        <p class="product-price">$${p.precio.toLocaleString('es-AR')}</p>
+        <button class="btn-add-cart" onclick="addToCart(${i})">Agregar al carrito</button>
       </div>
     </div>
   `).join('');
