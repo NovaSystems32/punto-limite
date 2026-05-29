@@ -382,6 +382,25 @@ a { text-decoration: none; color: inherit; }
 }
 .btn-status:hover { border-color: var(--accent); color: var(--accent); }
 
+/* Toast de admin */
+.admin-toast {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.admin-toast.show { opacity: 1; transform: translateY(0); }
+.admin-toast.ok  { background: #0d0d0d; color: #fff; }
+.admin-toast.err { background: #ef4444; color: #fff; }
+
 /* Responsive */
 @media (max-width: 600px) {
   .product-row { grid-template-columns: 44px 1fr auto auto; }
