@@ -4,6 +4,12 @@
    (Firebase se inicializa en firebase-init.js)
    ============================================================ */
 
+/* --- WhatsApp del negocio --- */
+var WA_NUMERO = '543571626532';
+
+/* --- Último pedido (para el mensaje de WA) --- */
+var _lastPedido = null;
+
 /* --- Estado del carrito (se guarda en el navegador) --- */
 var cart = JSON.parse(localStorage.getItem('pl_cart') || '[]');
 
@@ -177,6 +183,8 @@ function submitOrder(e) {
     total: getTotal()
   };
 
+  _lastPedido = pedido; // guardar para el mensaje de WA
+
   db.collection('pedidos').add(pedido)
     .then(function() {
       cart = [];
@@ -193,6 +201,27 @@ function submitOrder(e) {
 }
 
 /* --- Eventos --- */
+/* --- WhatsApp --- */
+function openWhatsApp() {
+  if (!_lastPedido) return;
+  var p    = _lastPedido;
+  var lines = [];
+  lines.push('🛒 *Nuevo pedido — Punto Límite*');
+  lines.push('');
+  p.items.forEach(function(item) {
+    var talle = item.talle && item.talle !== 'único' ? ' (Talle ' + item.talle + ')' : '';
+    lines.push('• ' + item.nombre + talle + ' × ' + item.cantidad + '  →  ' + formatPrice(item.subtotal));
+  });
+  lines.push('');
+  lines.push('*Total: ' + formatPrice(p.total) + '*');
+  lines.push('');
+  lines.push('👤 *Cliente:* ' + p.cliente.nombre);
+  lines.push('📞 *Teléfono:* ' + p.cliente.telefono);
+  if (p.cliente.notas) lines.push('📝 *Notas:* ' + p.cliente.notas);
+  var url = 'https://wa.me/' + WA_NUMERO + '?text=' + encodeURIComponent(lines.join('\n'));
+  window.open(url, '_blank');
+}
+
 document.getElementById('cartBtn').addEventListener('click', openCart);
 document.getElementById('cartOverlay').addEventListener('click', closeCart);
 document.getElementById('cartClose').addEventListener('click', closeCart);

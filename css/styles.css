@@ -1407,6 +1407,22 @@ img { display: block; max-width: 100%; }
   transition: background 0.2s;
 }
 .cart-success button:hover { background: var(--accent); }
+.btn-wa {
+  background: #25D366;
+  color: var(--white);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.8rem;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+.btn-wa:hover { background: #1ebe5a; transform: translateY(-2px); }
 
 /* Toast */
 .cart-toast {
