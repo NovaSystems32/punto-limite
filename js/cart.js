@@ -288,6 +288,121 @@ function submitOrder(e) {
 }
 
 /* --- Eventos --- */
+/* ============================================================
+   DETALLE DEL PRODUCTO
+   ============================================================ */
+var _pdDocId = null;
+var _pdTalle = null;
+var _pdColor = null;
+var _pdNeedsTalle = false;
+var _pdNeedsColor = false;
+
+function openPD(docId) {
+  var data = productCache[docId];
+  if (!data) return;
+  _pdDocId = docId;
+  _pdTalle = null;
+  _pdColor = null;
+
+  var img = data.img || '';
+  var imgSrc = (img.startsWith('http') || img.startsWith('data:')) ? img : 'img/' + img;
+  document.getElementById('pdImg').src   = imgSrc;
+  document.getElementById('pdName').textContent  = data.nombre;
+  document.getElementById('pdPrice').textContent = '$' + Number(data.precio).toLocaleString('es-AR');
+
+  var badge = document.getElementById('pdBadge');
+  if (data.badge) { badge.textContent = data.badge; badge.style.display = 'inline-block'; }
+  else            { badge.style.display = 'none'; }
+
+  var desc = document.getElementById('pdDesc');
+  if (data.descripcion) { desc.textContent = data.descripcion; desc.style.display = 'block'; }
+  else                  { desc.style.display = 'none'; }
+
+  var stock   = typeof data.stock !== 'undefined' ? Number(data.stock) : 99;
+  var stockEl = document.getElementById('pdStock');
+  stockEl.innerHTML = stock === 0 ? '<span class="stock-badge stock-out">Sin stock</span>'
+    : stock <= 5 ? '<span class="stock-badge stock-low">¡Últimas ' + stock + ' unidades!</span>' : '';
+
+  var talles = (data.talles || '').trim();
+  _pdNeedsTalle = !!talles;
+  var sizeSection = document.getElementById('pdSizeSection');
+  if (talles) {
+    sizeSection.style.display = 'block';
+    document.getElementById('pdSizes').innerHTML = talles.split(',').map(function(t) {
+      t = t.trim();
+      return '<button class="size-btn pd-size-btn" onclick="selectPDTalle(this,\'' + t + '\')">' + t + '</button>';
+    }).join('');
+  } else { sizeSection.style.display = 'none'; }
+
+  var colores = (data.colores || '').trim();
+  _pdNeedsColor = !!colores;
+  var colorSection = document.getElementById('pdColorSection');
+  if (colores) {
+    colorSection.style.display = 'block';
+    document.getElementById('pdColors').innerHTML = colores.split(',').map(function(c) {
+      c = c.trim();
+      var hex = getColorHex(c);
+      return '<div class="color-swatch-wrap">' +
+        '<button class="color-btn pd-color-btn" style="background:' + hex + '" onclick="selectPDColor(this,\'' + c + '\')" title="' + c + '"></button>' +
+        '<p class="color-btn-label">' + c + '</p>' +
+      '</div>';
+    }).join('');
+  } else { colorSection.style.display = 'none'; }
+
+  var addBtn = document.getElementById('pdAddBtn');
+  addBtn.disabled = stock === 0;
+  updatePDBtn();
+
+  document.getElementById('pdOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePD() {
+  document.getElementById('pdOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function selectPDTalle(el, talle) {
+  _pdTalle = talle;
+  document.querySelectorAll('.pd-size-btn').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  updatePDBtn();
+}
+
+function selectPDColor(el, color) {
+  _pdColor = color;
+  document.querySelectorAll('.pd-color-btn').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  updatePDBtn();
+}
+
+function updatePDBtn() {
+  var ok = (!_pdNeedsTalle || _pdTalle) && (!_pdNeedsColor || _pdColor);
+  var btn = document.getElementById('pdAddBtn');
+  if (btn && !btn.disabled) btn.disabled = !ok;
+}
+
+function addFromPD() {
+  if (!_pdDocId) return;
+  var data = productCache[_pdDocId];
+  var img  = data.img || '';
+  var fakeBtn = {
+    getAttribute: function(attr) {
+      if (attr === 'data-id')     return _pdDocId;
+      if (attr === 'data-nombre') return data.nombre;
+      if (attr === 'data-precio') return String(data.precio);
+      if (attr === 'data-img')    return img;
+      return '';
+    }
+  };
+  closePD();
+  doAddToCart(fakeBtn, _pdTalle, _pdColor);
+}
+
+document.getElementById('pdOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePD();
+});
+
 /* --- WhatsApp --- */
 function openWhatsApp() {
   if (!_lastPedido) return;

@@ -57,6 +57,9 @@ var observer = new IntersectionObserver(function(entries) {
 
 document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
 
+/* --- Cache de productos para el modal de detalle --- */
+var productCache = {};
+
 /* --- Render de una card de producto --- */
 function renderCard(data, docId) {
   var img    = data.img || '';
@@ -66,13 +69,15 @@ function renderCard(data, docId) {
                   : stock <= 5  ? '<span class="stock-badge stock-low">¡Últimas ' + stock + ' unidades!</span>'
                   : '';
   var btnDisabled = stock === 0 ? ' disabled' : '';
+  productCache[docId] = data; // guardar para el modal
+
   return '<div class="product-card fade-in">' +
-    '<div class="product-img">' +
+    '<div class="product-img pd-trigger" onclick="openPD(\'' + docId + '\')" style="cursor:pointer">' +
       '<img src="' + imgSrc + '" alt="' + data.nombre + '" loading="lazy">' +
       (data.badge ? '<span class="product-badge">' + data.badge + '</span>' : '') +
     '</div>' +
     '<div class="product-info">' +
-      '<h3>' + data.nombre + '</h3>' +
+      '<h3 class="pd-trigger" onclick="openPD(\'' + docId + '\')" style="cursor:pointer">' + data.nombre + '</h3>' +
       '<p class="product-price">$' + Number(data.precio).toLocaleString('es-AR') + '</p>' +
       (stockBadge ? '<div>' + stockBadge + '</div>' : '') +
       '<button class="btn-add-cart"' + btnDisabled +

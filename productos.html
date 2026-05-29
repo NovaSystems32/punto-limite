@@ -82,6 +82,35 @@
     </div>
   </footer>
 
+  <!-- DETALLE DEL PRODUCTO -->
+  <div class="pd-overlay" id="pdOverlay">
+    <div class="pd-modal" id="pdModal">
+      <button class="pd-close" onclick="closePD()">✕</button>
+      <div class="pd-grid">
+        <div class="pd-img-wrap">
+          <img id="pdImg" src="" alt="">
+          <span class="product-badge pd-badge" id="pdBadge" style="display:none"></span>
+        </div>
+        <div class="pd-info">
+          <h2 class="pd-name"  id="pdName"></h2>
+          <p  class="pd-price" id="pdPrice"></p>
+          <div class="pd-stock" id="pdStock"></div>
+          <div class="pd-divider"></div>
+          <p class="pd-desc" id="pdDesc" style="display:none"></p>
+          <div id="pdSizeSection" style="display:none">
+            <p class="pd-label">Talle</p>
+            <div class="size-buttons" id="pdSizes"></div>
+          </div>
+          <div id="pdColorSection" style="display:none">
+            <p class="pd-label">Color</p>
+            <div class="color-buttons" id="pdColors"></div>
+          </div>
+          <button class="btn-add-cart pd-add-btn" id="pdAddBtn" onclick="addFromPD()">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- SELECTOR DE TALLE Y COLOR -->
   <div class="size-overlay" id="sizeOverlay">
     <div class="size-picker">

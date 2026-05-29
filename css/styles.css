@@ -1479,6 +1479,103 @@ img { display: block; max-width: 100%; }
 .stock-out { background: #fee2e2; color: #991b1b; }
 
 /* ============================================================
+   DETALLE DEL PRODUCTO
+   ============================================================ */
+.pd-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s var(--ease-out);
+}
+.pd-overlay.open { opacity: 1; pointer-events: all; }
+
+.pd-modal {
+  background: var(--white);
+  border-radius: 20px;
+  width: min(900px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.32s var(--ease-out);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+}
+.pd-overlay.open .pd-modal { transform: translateY(0) scale(1); }
+
+.pd-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: var(--crudo-dark); border: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  font-size: 1rem; cursor: pointer; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s;
+}
+.pd-close:hover { background: #ddd; }
+
+.pd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.pd-img-wrap {
+  position: relative;
+  background: var(--crudo);
+  border-radius: 20px 0 0 20px;
+  overflow: hidden;
+  min-height: 420px;
+}
+.pd-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.pd-badge { position: absolute; top: 1rem; left: 1rem; }
+
+.pd-info {
+  padding: 2.5rem 2rem 2rem;
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.pd-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.04em; line-height: 1.1;
+}
+.pd-price {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--accent-dark);
+  letter-spacing: 0.03em;
+}
+.pd-stock { min-height: 1.4rem; }
+.pd-divider {
+  height: 1px; background: var(--crudo-dark);
+  margin: 0.2rem 0;
+}
+.pd-desc {
+  font-size: 0.92rem; color: var(--gray);
+  line-height: 1.7;
+}
+.pd-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 0.6rem;
+}
+.pd-add-btn {
+  margin-top: auto;
+  width: 100%; padding: 1rem;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+  .pd-grid { grid-template-columns: 1fr; }
+  .pd-img-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
+  .pd-info { padding: 1.5rem 1.2rem; }
+}
+
+/* ============================================================
    SELECTOR DE TALLE
    ============================================================ */
 .size-overlay {
