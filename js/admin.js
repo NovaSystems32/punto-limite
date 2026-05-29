@@ -24,7 +24,11 @@ var defaultProductos = [
 var editingId = null;
 
 function fmt(n)        { return '$' + Number(n).toLocaleString('es-AR'); }
-function getImgSrc(img){ return img && img.startsWith('http') ? img : 'img/' + img; }
+function getImgSrc(img){
+  if (!img) return 'img/logo.jpeg';
+  if (img.startsWith('data:') || img.startsWith('http')) return img;
+  return 'img/' + img;
+}
 
 /* ============================================================
    TOAST
@@ -217,20 +221,20 @@ function updateImgPreview(src) {
   else     { img.classList.remove('visible'); }
 }
 
-/* --- Comprimir imagen antes de subir (Canvas API) --- */
-function compressImage(file) {
+/* --- Comprimir imagen a base64 (sin upload a Storage) --- */
+function compressToBase64(file) {
   return new Promise(function(resolve) {
     var reader = new FileReader();
     reader.onload = function(e) {
       var img = new Image();
       img.onload = function() {
-        var MAX   = 900;  // ancho máximo en píxeles
-        var ratio = Math.min(MAX / img.width, MAX / img.height, 1);
+        var MAX    = 700;   // px máximos (ajusta calidad vs tamaño)
+        var ratio  = Math.min(MAX / img.width, MAX / img.height, 1);
         var canvas = document.createElement('canvas');
         canvas.width  = Math.round(img.width  * ratio);
         canvas.height = Math.round(img.height * ratio);
         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', 0.82);
+        resolve(canvas.toDataURL('image/jpeg', 0.75)); // base64 lista
       };
       img.src = e.target.result;
     };
@@ -247,29 +251,14 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
   btn.disabled    = true;
 
   if (file) {
-    btn.textContent = 'Comprimiendo imagen...';
-    compressImage(file).then(function(blob) {
-      var fileName = Date.now() + '.jpg';
-      var ref  = storage.ref('productos/' + fileName);
-      var task = ref.put(blob);
-      document.getElementById('uploadBarWrap').style.display = 'block';
-
-      task.on('state_changed',
-        function(snap) {
-          var pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
-          document.getElementById('uploadBar').style.width       = pct + '%';
-          document.getElementById('uploadLabel').textContent     = 'Subiendo... ' + pct + '%';
-          btn.textContent = 'Subiendo ' + pct + '%...';
-        },
-        function(err) {
-          console.error(err);
-          btn.textContent = 'Error al subir la imagen';
-          btn.disabled    = false;
-        },
-        function() {
-          ref.getDownloadURL().then(function(url) { saveProductData(url, btn); });
-        }
-      );
+    btn.textContent = 'Procesando imagen...';
+    compressToBase64(file).then(function(base64) {
+      // la imagen queda guardada directo en Firestore — sin uploads lentos
+      saveProductData(base64, btn);
+    }).catch(function(err) {
+      console.error(err);
+      btn.textContent = 'Error con la imagen';
+      btn.disabled    = false;
     });
   } else {
     saveProductData(document.getElementById('pImgUrl').value.trim(), btn);

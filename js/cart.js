@@ -41,7 +41,7 @@ function renderCart() {
   }
 
   list.innerHTML = cart.map(function(item, i) {
-    var imgSrc = item.img && item.img.startsWith('http') ? item.img : 'img/' + item.img;
+    var imgSrc = item.img && (item.img.startsWith('http') || item.img.startsWith('data:')) ? item.img : 'img/' + item.img;
     return '<div class="cart-item">' +
       '<img src="' + imgSrc + '" alt="' + item.nombre + '">' +
       '<div class="cart-item-info">' +

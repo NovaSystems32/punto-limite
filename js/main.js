@@ -59,7 +59,8 @@ document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el
 
 /* --- Render de una card de producto --- */
 function renderCard(data, docId) {
-  var imgSrc = data.img && data.img.startsWith('http') ? data.img : 'img/' + data.img;
+  var img    = data.img || '';
+  var imgSrc = (img.startsWith('http') || img.startsWith('data:')) ? img : 'img/' + img;
   return '<div class="product-card fade-in">' +
     '<div class="product-img">' +
       '<img src="' + imgSrc + '" alt="' + data.nombre + '" loading="lazy">' +
