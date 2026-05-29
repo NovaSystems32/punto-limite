@@ -17,6 +17,7 @@ const productos = [
   { nombre: 'Buzo Técnico',    precio: '$32.000', img: 'prod-buzo.jpg',    badge: 'Último!' },
   { nombre: 'Short Deportivo', precio: '$38.000', img: 'prod-short.jpg',   badge: ''        },
   { nombre: 'Remera Técnica',  precio: '$18.000', img: 'prod-remera.jpg',  badge: 'Nuevo'   },
+  { nombre: 'Top Deportivo',   precio: '$15.000', img: 'prod-top.jpg',     badge: 'Nuevo'   },
 ];
 
 /* --- Navbar scroll --- */
