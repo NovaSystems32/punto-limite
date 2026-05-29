@@ -76,6 +76,14 @@ img { display: block; max-width: 100%; }
   border-color: var(--accent);
   transform: scale(1.06);
 }
+.nav-logo-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--black);
+  margin-left: 0.65rem;
+  line-height: 1;
+}
 .nav-links { display: flex; gap: 2.5rem; }
 .nav-links a {
   position: relative;
