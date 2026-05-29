@@ -291,11 +291,12 @@ function submitOrder(e) {
 /* ============================================================
    DETALLE DEL PRODUCTO
    ============================================================ */
-var _pdDocId = null;
-var _pdTalle = null;
-var _pdColor = null;
+var _pdDocId      = null;
+var _pdTalle      = null;
+var _pdColor      = null;
 var _pdNeedsTalle = false;
 var _pdNeedsColor = false;
+var _pdNoStock    = false;
 
 function openPD(docId) {
   var data = productCache[docId];
@@ -349,8 +350,9 @@ function openPD(docId) {
     }).join('');
   } else { colorSection.style.display = 'none'; }
 
+  _pdNoStock = (stock === 0);
   var addBtn = document.getElementById('pdAddBtn');
-  addBtn.disabled = stock === 0;
+  addBtn.disabled = _pdNoStock;
   updatePDBtn();
 
   document.getElementById('pdOverlay').classList.add('open');
@@ -377,9 +379,10 @@ function selectPDColor(el, color) {
 }
 
 function updatePDBtn() {
-  var ok = (!_pdNeedsTalle || _pdTalle) && (!_pdNeedsColor || _pdColor);
+  if (_pdNoStock) return;
+  var ok  = (!_pdNeedsTalle || _pdTalle) && (!_pdNeedsColor || _pdColor);
   var btn = document.getElementById('pdAddBtn');
-  if (btn && !btn.disabled) btn.disabled = !ok;
+  if (btn) btn.disabled = !ok;
 }
 
 function addFromPD() {
