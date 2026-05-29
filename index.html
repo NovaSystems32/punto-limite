@@ -7,7 +7,7 @@
   <meta name="description" content="Punto Límite — Indumentaria deportiva de alta performance. Colección 26.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -31,29 +31,109 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero" id="inicio">
-    <div class="hero-content">
-      <div class="hero-text">
-        <p class="hero-tag">Nueva Colección 26</p>
-        <h1 class="hero-title">SIN<br>LÍMITES</h1>
-        <p class="hero-subtitle">Indumentaria deportiva de alta performance. Diseñada para ir más lejos.</p>
-        <div class="hero-actions">
-          <a href="#productos" class="btn btn-primary">Ver Colección</a>
-          <a href="#nosotros" class="btn btn-outline">Nuestra Historia</a>
+  <section class="hero" id="inicio" aria-label="Hero principal">
+
+    <!-- Capas de fondo -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg__dots"></div>
+      <div class="hero-bg__glow"></div>
+      <span class="hero-bg__word">MOVE</span>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="hero-inner">
+
+      <!-- Columna izquierda: texto -->
+      <div class="hero-left">
+
+        <div class="hero-eyebrow" data-enter="0">
+          <span class="hero-eyebrow__dot"></span>
+          <span>Colección 26</span>
+          <span class="hero-eyebrow__sep">—</span>
+          <span>Alta Performance</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="hero-title__solid" data-enter="1">SIN</span>
+          <span class="hero-title__outline" data-enter="2">LÍMITES</span>
+        </h1>
+
+        <p class="hero-sub" data-enter="3">
+          Indumentaria deportiva diseñada<br>para ir más lejos.
+        </p>
+
+        <div class="hero-actions" data-enter="4">
+          <a href="#productos" class="hbtn hbtn--fill">
+            <span class="hbtn__label">Ver Colección</span>
+            <span class="hbtn__icon" aria-hidden="true">→</span>
+          </a>
+          <a href="#nosotros" class="hbtn hbtn--ghost">Nuestra Historia</a>
+        </div>
+
+        <div class="hero-stats" data-enter="5">
+          <div class="hero-stat">
+            <strong>500+</strong>
+            <span>Clientes</span>
+          </div>
+          <div class="hero-stat__sep" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <strong>3</strong>
+            <span>Años</span>
+          </div>
+          <div class="hero-stat__sep" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <strong>100%</strong>
+            <span>Performance</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha: visual -->
+      <div class="hero-right" aria-hidden="true">
+        <div class="hero-visual">
+
+          <!-- Glow de fondo -->
+          <div class="hero-visual__glow"></div>
+
+          <!-- Frame pill con imagen -->
+          <div class="hero-visual__frame">
+            <img
+              src="img/hero-producto.jpg"
+              alt="Modelo Colección 26 Punto Límite"
+              class="hero-visual__img"
+              loading="eager"
+            >
+          </div>
+
+          <!-- Anillo decorativo -->
+          <div class="hero-visual__ring"></div>
+
+          <!-- Badge flotante -->
+          <div class="hero-visual__badge">
+            <span>NEW</span>
+            <strong>COL 26</strong>
+          </div>
+
+          <!-- Líneas decorativas -->
+          <div class="hero-visual__line hero-visual__line--h"></div>
+          <div class="hero-visual__line hero-visual__line--v"></div>
+
         </div>
       </div>
-      <div class="hero-image-wrap">
-        <img src="img/hero-producto.webp" alt="Colección 26 — Punto Límite" class="hero-img">
-      </div>
+
     </div>
-    <div class="hero-scroll">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
+
+    <!-- Scroll indicator -->
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="hero-scroll__bar"></div>
+      <span>scroll</span>
     </div>
+
   </section>
 
   <!-- PRODUCTOS -->
-  <section class="section" id="productos">
+  <section class="section-productos" id="productos">
     <div class="container">
       <div class="section-header">
         <p class="section-tag">Colección 26</p>
@@ -62,7 +142,8 @@
       <div class="products-grid">
 
         <div class="product-card fade-in">
-          <div class="product-img img-1">
+          <div class="product-img">
+            <img src="img/prod-campera.jpg" alt="Campera Running" loading="lazy">
             <span class="product-badge">Nuevo</span>
           </div>
           <div class="product-info">
@@ -73,7 +154,8 @@
         </div>
 
         <div class="product-card fade-in">
-          <div class="product-img img-2">
+          <div class="product-img">
+            <img src="img/prod-buzo.jpg" alt="Buzo Técnico" loading="lazy">
             <span class="product-badge">Último!</span>
           </div>
           <div class="product-info">
@@ -84,7 +166,9 @@
         </div>
 
         <div class="product-card fade-in">
-          <div class="product-img img-3"></div>
+          <div class="product-img">
+            <img src="img/prod-short.jpg" alt="Short Deportivo" loading="lazy">
+          </div>
           <div class="product-info">
             <h3>Short Deportivo</h3>
             <p class="product-price">$38.000</p>
@@ -93,7 +177,8 @@
         </div>
 
         <div class="product-card fade-in">
-          <div class="product-img img-4">
+          <div class="product-img">
+            <img src="img/prod-remera.jpg" alt="Remera Técnica" loading="lazy">
             <span class="product-badge">Nuevo</span>
           </div>
           <div class="product-info">
@@ -103,6 +188,23 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>  <!-- fin productos -->
+
+  <!-- BANNER OFERTA -->
+  <section class="section-banner" id="ofertas">
+    <div class="container">
+      <div class="banner-inner">
+        <div class="banner-text">
+          <p class="banner-tag">Tiempo Limitado</p>
+          <h2 class="banner-title">HASTA<br>30% OFF</h2>
+          <p class="banner-sub">En toda la Colección 26. Solo por esta semana.</p>
+          <a href="#contacto" class="btn btn-accent-solid">Ver Ofertas</a>
+        </div>
+        <div class="banner-deco">
+          <span class="banner-number">26</span>
+        </div>
       </div>
     </div>
   </section>
@@ -115,15 +217,15 @@
         <h2 class="section-title">Categorías</h2>
       </div>
       <div class="categories-grid">
-        <div class="category-card fade-in cat-hombre">
+        <div class="category-card fade-in" style="background-image:url('img/cat-running.jpg'); background-size:cover; background-position:center;">
           <h3>Running</h3>
           <a href="#contacto" class="category-link">Ver más &rarr;</a>
         </div>
-        <div class="category-card fade-in cat-mujer">
+        <div class="category-card fade-in" style="background-image:url('img/cat-training.jpg'); background-size:cover; background-position:center;">
           <h3>Training</h3>
           <a href="#contacto" class="category-link">Ver más &rarr;</a>
         </div>
-        <div class="category-card fade-in cat-accesorios">
+        <div class="category-card fade-in" style="background-image:url('img/cat-accesorios.jpg'); background-size:cover; background-position:center;">
           <h3>Accesorios</h3>
           <a href="#contacto" class="category-link">Ver más &rarr;</a>
         </div>
