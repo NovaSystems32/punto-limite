@@ -14,11 +14,11 @@ var unsubOrders  = null;   // para cancelar el listener de pedidos
 
 /* --- Productos por defecto (se cargan la primera vez) --- */
 var defaultProductos = [
-  { nombre: 'Campera Running', precio: 45000, img: 'prod-campera.jpg', badge: 'Nuevo',   destacado: true,  orden: 0, stock: 10 },
-  { nombre: 'Buzo Técnico',    precio: 32000, img: 'prod-buzo.jpg',    badge: 'Último!', destacado: true,  orden: 1, stock: 3  },
-  { nombre: 'Short Deportivo', precio: 38000, img: 'prod-short.jpg',   badge: '',        destacado: false, orden: 2, stock: 8  },
-  { nombre: 'Remera Técnica',  precio: 18000, img: 'prod-remera.jpg',  badge: 'Nuevo',   destacado: true,  orden: 3, stock: 15 },
-  { nombre: 'Top Deportivo',   precio: 15000, img: 'prod-top.jpg',     badge: 'Nuevo',   destacado: false, orden: 4, stock: 5  },
+  { nombre: 'Campera Running', precio: 45000, img: 'prod-campera.jpg', badge: 'Nuevo',   destacado: true,  orden: 0, stock: 10, categoria: 'Camperas'       },
+  { nombre: 'Buzo Técnico',    precio: 32000, img: 'prod-buzo.jpg',    badge: 'Último!', destacado: true,  orden: 1, stock: 3,  categoria: 'Buzos'          },
+  { nombre: 'Short Deportivo', precio: 38000, img: 'prod-short.jpg',   badge: '',        destacado: false, orden: 2, stock: 8,  categoria: 'Shorts'         },
+  { nombre: 'Remera Técnica',  precio: 18000, img: 'prod-remera.jpg',  badge: 'Nuevo',   destacado: true,  orden: 3, stock: 15, categoria: 'Remeras'        },
+  { nombre: 'Top Deportivo',   precio: 15000, img: 'prod-top.jpg',     badge: 'Nuevo',   destacado: false, orden: 4, stock: 5,  categoria: 'Remeras cortas' },
 ];
 
 var editingId = null;
