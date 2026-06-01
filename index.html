@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto Límite — Ropa Deportiva</title>
+  <link rel="icon" type="image/jpeg" href="img/logo.jpeg">
+  <link rel="apple-touch-icon" href="img/logo.jpeg">
+  <meta name="description" content="Punto Límite — Indumentaria deportiva de alta performance. Colección 26.">
+  <meta property="og:title"       content="Punto Límite — Ropa Deportiva">
+  <meta property="og:description" content="Indumentaria deportiva de alta performance. Camperas, buzos, remeras y más. Colección 26.">
+  <meta property="og:image"       content="https://novasystems32.github.io/punto-limite/img/logo.jpeg">
+  <meta property="og:url"         content="https://novasystems32.github.io/punto-limite/">
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Punto Límite">
+  <meta name="twitter:card"       content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#inicio" class="nav-logo">
+        <img src="img/logo.jpeg" alt="Punto Límite" class="nav-logo-img">
+        <span class="nav-logo-name">PUNTO LÍMITE</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li class="nav-has-dropdown">
+          <a href="#productos">Productos ▾</a>
+          <ul class="nav-dropdown" id="navCatDropdown"></ul>
+        </li>
+        <li><a href="#categorias">Categorías</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio" aria-label="Hero principal">
+
+    <!-- Capas de fondo -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg__dots"></div>
+      <div class="hero-bg__glow"></div>
+      <span class="hero-bg__word">MOVE</span>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="hero-inner">
+
+      <!-- Columna izquierda: texto -->
+      <div class="hero-left">
+
+        <div class="hero-eyebrow" data-enter="0">
+          <span class="hero-eyebrow__dot"></span>
+          <span>Colección 26</span>
+          <span class="hero-eyebrow__sep">—</span>
+          <span>Alta Performance</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="hero-title__solid" data-enter="1">SIN</span>
+          <span class="hero-title__outline" data-enter="2">LÍMITES</span>
+        </h1>
+
+        <p class="hero-sub" data-enter="3">
+          Indumentaria deportiva diseñada<br>para ir más lejos.
+        </p>
+
+        <div class="hero-actions" data-enter="4">
+          <a href="#productos" class="hbtn hbtn--fill">
+            <span class="hbtn__label">Ver Colección</span>
+            <span class="hbtn__icon" aria-hidden="true">→</span>
+          </a>
+          <a href="#nosotros" class="hbtn hbtn--ghost">Nuestra Historia</a>
+        </div>
+
+        <div class="hero-stats" data-enter="5">
+          <div class="hero-stat">
+            <strong>500+</strong>
+            <span>Clientes</span>
+          </div>
+          <div class="hero-stat__sep" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <strong>1</strong>
+            <span>Año</span>
+          </div>
+          <div class="hero-stat__sep" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <strong>100%</strong>
+            <span>Performance</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha: visual -->
+      <div class="hero-right" aria-hidden="true">
+        <div class="hero-visual">
+
+          <!-- Glow de fondo -->
+          <div class="hero-visual__glow"></div>
+
+          <!-- Frame pill con imagen -->
+          <div class="hero-visual__frame">
+            <img
+              src="img/hero-v3.png"
+              alt="Modelo Colección 26 Punto Límite"
+              class="hero-visual__img"
+              loading="eager"
+            >
+          </div>
+
+          <!-- Anillo decorativo -->
+          <div class="hero-visual__ring"></div>
+
+          <!-- Badge flotante -->
+          <div class="hero-visual__badge">
+            <span>NEW</span>
+            <strong>COL 26</strong>
+          </div>
+
+          <!-- Líneas decorativas -->
+          <div class="hero-visual__line hero-visual__line--h"></div>
+          <div class="hero-visual__line hero-visual__line--v"></div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="hero-scroll__bar"></div>
+      <span>scroll</span>
+    </div>
+
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="section-productos" id="productos">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Colección 26</p>
+        <h2 class="section-title">Novedades</h2>
+      </div>
+      <div class="product-filters" id="productFilters"></div>
+      <div class="products-grid" id="productsGrid"></div>
+      <div style="text-align:center; margin-top:2.5rem;">
+        <a href="productos.html" class="btn btn-outline-dark">Ver catálogo completo &rarr;</a>
+      </div>
+    </div>
+  </section>  <!-- fin productos -->
+
+  <!-- BANNER OFERTA -->
+  <section class="section-banner" id="ofertas">
+    <div class="container">
+      <div class="banner-inner">
+        <div class="banner-text">
+          <p class="banner-tag">Promoción</p>
+          <h2 class="banner-title">10%<br>DE DESCUENTO</h2>
+          <p class="banner-sub">En pagos de contado. Consultanos por WhatsApp.</p>
+          <a href="https://wa.me/543571626532" target="_blank" class="btn btn-accent-solid">Consultar</a>
+          <div class="banner-pay">
+            <p class="banner-pay-label">Medios de pago</p>
+            <div class="banner-pay-list">
+              <span class="pay-badge">💳 Tarjetas</span>
+              <span class="pay-badge">🏦 Transferencia</span>
+              <span class="pay-badge">💵 Efectivo</span>
+              <span class="pay-badge">📱 Mercado Pago</span>
+            </div>
+          </div>
+        </div>
+        <div class="banner-deco">
+          <span class="banner-number">26</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="section section-dark" id="categorias">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Explorar</p>
+        <h2 class="section-title">Categorías</h2>
+      </div>
+      <div class="categories-grid categories-grid--5">
+        <div class="category-card fade-in" style="background-image:url('img/prod-buzo.jpg'); background-size:cover; background-position:center;">
+          <h3>Buzos</h3>
+          <a href="productos.html?cat=Buzos" class="category-link">Ver más &rarr;</a>
+        </div>
+        <div class="category-card fade-in" style="background-image:url('img/prod-remera.jpg'); background-size:cover; background-position:center;">
+          <h3>Remeras</h3>
+          <a href="productos.html?cat=Remeras" class="category-link">Ver más &rarr;</a>
+        </div>
+        <div class="category-card fade-in" style="background-image:url('img/prod-campera.jpg'); background-size:cover; background-position:center;">
+          <h3>Camperas</h3>
+          <a href="productos.html?cat=Camperas" class="category-link">Ver más &rarr;</a>
+        </div>
+        <div class="category-card fade-in" style="background-image:url('img/prod-short.jpg'); background-size:cover; background-position:center;">
+          <h3>Shorts</h3>
+          <a href="productos.html?cat=Shorts" class="category-link">Ver más &rarr;</a>
+        </div>
+        <div class="category-card fade-in" style="background-image:url('img/cat-accesorios.jpg'); background-size:cover; background-position:center;">
+          <h3>Zapatillas</h3>
+          <a href="productos.html?cat=Zapatillas" class="category-link">Ver más &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="section" id="nosotros">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual fade-in">
+          <div class="about-block"></div>
+          <div class="about-accent"></div>
+          <img src="img/logo.jpeg" alt="Punto Límite" class="about-logo">
+          <div class="about-label">Est. 2022</div>
+        </div>
+        <div class="about-text fade-in">
+          <p class="section-tag">Nuestra Historia</p>
+          <h2 class="section-title">¿Quiénes somos?</h2>
+          <p>Punto Límite nació para acompañar a quienes no se detienen. Diseñamos indumentaria deportiva para rendir al máximo, sin importar el entrenamiento ni la distancia.</p>
+          <p>Usamos materiales técnicos de alta performance pensados para resistir cada kilómetro, cada repetición y cada desafío.</p>
+          <div class="about-stats">
+            <div class="stat fade-in">
+              <span class="stat-number">500+</span>
+              <span class="stat-label">Clientes</span>
+            </div>
+            <div class="stat fade-in">
+              <span class="stat-number">1</span>
+              <span class="stat-label">Año</span>
+            </div>
+            <div class="stat fade-in">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Calidad</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section section-red" id="contacto">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-text">
+          <p class="section-tag light">Escribinos</p>
+          <h2 class="section-title light">¿Tenés alguna consulta?</h2>
+          <p class="contact-desc">Respondemos en menos de 24 horas. También podés encontrarnos en nuestras redes.</p>
+          <div class="contact-links">
+            <a href="https://instagram.com/puntolimite.r3" target="_blank" class="social-link">Instagram</a>
+            <a href="https://wa.me/543571626532" target="_blank" class="social-link">WhatsApp</a>
+          </div>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <input type="text" id="nombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <input type="email" id="email" placeholder="Tu email" required>
+          </div>
+          <div class="form-group">
+            <textarea id="mensaje" placeholder="Tu consulta..." rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-white">Enviar Mensaje</button>
+          <p class="form-note" id="formMsg"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img src="img/logo.jpeg" alt="Punto Límite" class="footer-logo-img">
+          <p class="footer-logo">PUNTO LÍMITE</p>
+          <p class="footer-desc">Indumentaria deportiva de alta performance. Sin límites.</p>
+        </div>
+        <div>
+          <p class="footer-heading">Navegación</p>
+          <ul>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#categorias">Categorías</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-heading">Redes Sociales</p>
+          <ul>
+            <li><a href="https://instagram.com/puntolimite.r3" target="_blank">Instagram</a></li>
+            <li><a href="#">TikTok</a></li>
+            <li><a href="https://wa.me/543571626532" target="_blank">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-pay">
+        <p class="footer-pay-label">Medios de pago</p>
+        <div class="footer-pay-list">
+          <span class="pay-badge">💳 Tarjetas</span>
+          <span class="pay-badge">🏦 Transferencia</span>
+          <span class="pay-badge">💵 Efectivo</span>
+          <span class="pay-badge">📱 Mercado Pago</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Punto Límite. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DETALLE DEL PRODUCTO -->
+  <div class="pd-overlay" id="pdOverlay">
+    <div class="pd-modal" id="pdModal">
+      <button class="pd-close" onclick="closePD()">✕</button>
+      <div class="pd-grid">
+        <div class="pd-img-wrap">
+          <img id="pdImg" src="" alt="">
+          <span class="product-badge pd-badge" id="pdBadge" style="display:none"></span>
+        </div>
+        <div class="pd-info">
+          <h2 class="pd-name"  id="pdName"></h2>
+          <p  class="pd-price" id="pdPrice"></p>
+          <div class="pd-stock" id="pdStock"></div>
+          <div class="pd-divider"></div>
+          <p class="pd-desc" id="pdDesc" style="display:none"></p>
+          <div id="pdSizeSection" style="display:none">
+            <p class="pd-label">Talle</p>
+            <div class="size-buttons" id="pdSizes"></div>
+          </div>
+          <div id="pdColorSection" style="display:none">
+            <p class="pd-label">Color</p>
+            <div class="color-buttons" id="pdColors"></div>
+          </div>
+          <button class="btn-add-cart pd-add-btn" id="pdAddBtn" onclick="addFromPD()">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SELECTOR DE TALLE Y COLOR -->
+  <div class="size-overlay" id="sizeOverlay">
+    <div class="size-picker">
+      <p class="size-picker-label">Personalizar prenda</p>
+      <p class="size-picker-product" id="sizeProductName"></p>
+      <div id="sizeSection" style="display:none">
+        <p class="size-picker-sublabel">Talle</p>
+        <div class="size-buttons" id="sizeButtons"></div>
+      </div>
+      <div id="colorSection" style="display:none">
+        <p class="size-picker-sublabel">Color</p>
+        <div class="color-buttons" id="colorButtons"></div>
+      </div>
+      <button class="btn-add-confirm" id="addConfirmBtn" onclick="confirmOptions()" disabled>Agregar al carrito</button>
+      <button class="size-cancel" onclick="closeSizePicker()">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- CART OVERLAY -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- CART SIDEBAR -->
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Carrito de compras">
+
+    <div class="cart-header">
+      <h3>CARRITO <span id="cartCount">0 productos</span></h3>
+      <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <!-- Vista 1: lista de productos -->
+    <div class="cart-main" id="cartMain" style="display:flex;">
+      <div class="cart-list" id="cartList"></div>
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <strong id="cartTotal">$0</strong>
+        </div>
+        <button class="btn-checkout" id="checkoutBtn">Finalizar pedido</button>
+      </div>
+    </div>
+
+    <!-- Vista 2: formulario -->
+    <div class="cart-checkout" id="cartCheckout" style="display:none;">
+      <button class="cart-back" id="checkoutBack">← Volver al carrito</button>
+      <h4>Tus datos</h4>
+      <p>Completá el formulario y te contactamos para confirmar.</p>
+      <form class="checkout-form" id="checkoutForm">
+        <input type="text" id="checkoutNombre"   placeholder="Tu nombre completo" required>
+        <input type="tel"  id="checkoutTelefono" placeholder="Tu teléfono / WhatsApp" required>
+        <textarea id="checkoutNotas" rows="2" placeholder="Aclaraciones (opcional)"></textarea>
+        <div class="coupon-input-row">
+          <input type="text" id="couponInput" placeholder="Código de descuento">
+          <button type="button" class="btn-coupon" onclick="applyCoupon()">Aplicar</button>
+        </div>
+        <p class="coupon-feedback" id="couponFeedback"></p>
+        <div class="checkout-total-row">
+          <span>Total</span><strong id="checkoutFinalTotal"></strong>
+        </div>
+        <div class="payment-methods">
+          <p class="payment-methods-label">Medios de pago</p>
+          <div class="payment-methods-list">
+            <span class="pay-badge">💳 Tarjetas</span>
+            <span class="pay-badge">🏦 Transferencia</span>
+            <span class="pay-badge">💵 Efectivo</span>
+          </div>
+        </div>
+        <button type="submit" id="orderBtn">Confirmar pedido</button>
+      </form>
+    </div>
+
+    <!-- Vista 3: éxito -->
+    <div class="cart-success" id="cartSuccess" style="display:none;">
+      <div class="cart-success-icon">✓</div>
+      <h4>¡Pedido recibido!</h4>
+      <p>Guardamos tu pedido. Confirmalo por WhatsApp para coordinar pago y envío.</p>
+      <button class="btn-wa" onclick="openWhatsApp()">📲 Confirmar por WhatsApp</button>
+      <a href="https://link.mercadopago.com.ar/puntolimite26" target="_blank" class="btn-mp">💳 Pagar con Mercado Pago</a>
+      <button id="continueBtn">Seguir comprando</button>
+    </div>
+
+  </aside>
+
+  <!-- BOTÓN FLOTANTE -->
+  <button class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+    🛒 <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+
+  <!-- TOAST -->
+  <div class="cart-toast" id="cartToast"></div>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+</html>
