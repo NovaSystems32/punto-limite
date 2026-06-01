@@ -97,6 +97,18 @@ function renderCard(data, docId) {
   '</div>';
 }
 
+/* --- Poblar dropdown del navbar con categorías --- */
+function populateNavDropdowns(cats) {
+  ['navCatDropdown', 'navCatDropdownAll'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<li><a href="productos.html">Todos los productos</a></li>' +
+      cats.map(function(cat) {
+        return '<li><a href="productos.html?cat=' + encodeURIComponent(cat) + '">' + cat + '</a></li>';
+      }).join('');
+  });
+}
+
 /* --- Filtros de categoría --- */
 function buildFilters(filterId, gridEl, docs) {
   var filterEl = document.getElementById(filterId);
@@ -158,6 +170,24 @@ function loadToGrid(gridId, soloDestacados) {
       /* construir filtros */
       var filterId = soloDestacados ? 'productFilters' : 'productFiltersAll';
       buildFilters(filterId, el, docs);
+
+      /* poblar dropdowns del navbar */
+      var cats = [];
+      docs.forEach(function(doc) {
+        var cat = doc.data().categoria;
+        if (cat && cats.indexOf(cat) === -1) cats.push(cat);
+      });
+      if (cats.length) populateNavDropdowns(cats);
+
+      /* auto-filtrar si viene por URL ?cat=xxx */
+      var urlCat = new URLSearchParams(window.location.search).get('cat');
+      if (urlCat) {
+        var filterEl = document.getElementById(filterId);
+        if (filterEl) {
+          var btn = Array.from(filterEl.querySelectorAll('.filter-btn')).find(function(b) { return b.textContent === urlCat; });
+          if (btn) btn.click();
+        }
+      }
     })
     .catch(function(err) {
       console.error('Error cargando productos:', err);
