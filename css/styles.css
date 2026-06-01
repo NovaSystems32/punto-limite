@@ -1502,6 +1502,49 @@ img { display: block; max-width: 100%; }
   letter-spacing: 0.02em;
 }
 .btn-wa:hover { background: #1ebe5a; transform: translateY(-2px); }
+
+/* Medios de pago */
+.payment-methods { margin: 0.6rem 0; }
+.payment-methods-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  margin-bottom: 0.5rem;
+}
+.payment-methods-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pay-badge {
+  background: var(--crudo);
+  border: 1px solid var(--crudo-dark);
+  color: var(--black);
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+
+/* Footer medios de pago */
+.footer-pay {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 1.2rem 0;
+  margin-bottom: 0.5rem;
+}
+.footer-pay-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.6rem;
+}
+.footer-pay-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.footer-pay .pay-badge {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+}
 .btn-mp {
   display: block;
   background: #009ee3;
