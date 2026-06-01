@@ -1778,6 +1778,37 @@ img { display: block; max-width: 100%; }
 }
 .size-cancel:hover { color: var(--black); }
 
+/* Filtros de categoría */
+.product-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.filter-btn {
+  background: var(--white);
+  border: 2px solid var(--crudo-dark);
+  color: var(--black);
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+}
+.filter-btn:hover {
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--white);
+}
+.filter-btn.active {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
 .btn-outline-dark {
   display: inline-block;
   border: 2px solid var(--black);

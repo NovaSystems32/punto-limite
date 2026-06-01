@@ -221,6 +221,7 @@ function openModal(data, id) {
   document.getElementById('pNombre').value      = data ? data.nombre   : '';
   document.getElementById('pPrecio').value      = data ? data.precio   : '';
   document.getElementById('pBadge').value       = data ? data.badge    : '';
+  document.getElementById('pCategoria').value   = data ? (data.categoria  || '') : '';
   document.getElementById('pDesc').value        = data ? (data.descripcion || '') : '';
   document.getElementById('pStock').value       = data ? (typeof data.stock !== 'undefined' ? data.stock : '') : '';
   document.getElementById('pTalles').value      = data ? (data.talles  || '') : '';
@@ -403,6 +404,7 @@ function saveProductData(imgValue, btn) {
     nombre:    document.getElementById('pNombre').value.trim(),
     precio:    parseInt(document.getElementById('pPrecio').value, 10),
     badge:     document.getElementById('pBadge').value.trim(),
+    categoria:    document.getElementById('pCategoria').value.trim(),
     descripcion:  document.getElementById('pDesc').value.trim(),
     stock:        parseInt(document.getElementById('pStock').value, 10) || 0,
     stockMatrix:  leerGrillaStock() || {},

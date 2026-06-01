@@ -76,7 +76,7 @@ function renderCard(data, docId) {
   var btnDisabled = stock === 0 ? ' disabled' : '';
   productCache[docId] = data; // guardar para el modal
 
-  return '<div class="product-card fade-in">' +
+  return '<div class="product-card fade-in" data-cat="' + (data.categoria || '') + '">' +
     '<div class="product-img pd-trigger" onclick="openPD(\'' + docId + '\')" style="cursor:pointer">' +
       '<img src="' + imgSrc + '" alt="' + data.nombre + '" loading="lazy">' +
       (data.badge ? '<span class="product-badge">' + data.badge + '</span>' : '') +
@@ -95,6 +95,42 @@ function renderCard(data, docId) {
         ' onclick="addToCart(this)">Agregar al carrito</button>' +
     '</div>' +
   '</div>';
+}
+
+/* --- Filtros de categoría --- */
+function buildFilters(filterId, gridEl, docs) {
+  var filterEl = document.getElementById(filterId);
+  if (!filterEl) return;
+
+  var cats = ['Todos'];
+  docs.forEach(function(doc) {
+    var cat = doc.data().categoria;
+    if (cat && cats.indexOf(cat) === -1) cats.push(cat);
+  });
+
+  if (cats.length <= 1) { filterEl.style.display = 'none'; return; }
+
+  filterEl.innerHTML = cats.map(function(cat) {
+    return '<button class="filter-btn' + (cat === 'Todos' ? ' active' : '') + '" onclick="filterProducts(this, \'' + cat + '\', \'' + gridEl.id + '\')">' + cat + '</button>';
+  }).join('');
+}
+
+function filterProducts(btn, cat, gridId) {
+  var gridEl = document.getElementById(gridId);
+  if (!gridEl) return;
+
+  /* actualizar botones activos */
+  btn.closest('.product-filters').querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  /* mostrar/ocultar cards */
+  gridEl.querySelectorAll('.product-card').forEach(function(card) {
+    if (cat === 'Todos' || card.getAttribute('data-cat') === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
 }
 
 /* --- Cargar productos desde Firestore --- */
@@ -118,6 +154,10 @@ function loadToGrid(gridId, soloDestacados) {
         return renderCard(doc.data(), doc.id);
       }).join('');
       el.querySelectorAll('.fade-in').forEach(function(card) { observer.observe(card); });
+
+      /* construir filtros */
+      var filterId = soloDestacados ? 'productFilters' : 'productFiltersAll';
+      buildFilters(filterId, el, docs);
     })
     .catch(function(err) {
       console.error('Error cargando productos:', err);
