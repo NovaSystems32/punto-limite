@@ -24,12 +24,18 @@ var defaultProductos = [
 var editingId = null;
 
 function fmt(n) { return '$' + Number(n).toLocaleString('es-AR'); }
+function stockTotal(p) {
+  if (p.stockMatrix && Object.keys(p.stockMatrix).length) {
+    return Object.values(p.stockMatrix).reduce(function(a,b){ return a + (Number(b)||0); }, 0);
+  }
+  return typeof p.stock !== 'undefined' ? Number(p.stock) : null;
+}
 function stockLabel(s) {
-  s = typeof s !== 'undefined' ? Number(s) : '—';
-  if (s === '—') return '<span style="color:#9ca3af">sin stock cargado</span>';
-  if (s === 0)   return '<span style="color:#ef4444;font-weight:700">Sin stock</span>';
-  if (s <= 5)    return '<span style="color:#f97316;font-weight:700">' + s + ' unidades</span>';
-  return '<span style="color:#22c55e;font-weight:600">' + s + ' unidades</span>';
+  if (s === null || s === undefined) return '<span style="color:#9ca3af">sin stock</span>';
+  s = Number(s);
+  if (s === 0)  return '<span style="color:#ef4444;font-weight:700">Sin stock</span>';
+  if (s <= 5)   return '<span style="color:#f97316;font-weight:700">' + s + ' u.</span>';
+  return '<span style="color:#22c55e;font-weight:600">' + s + ' u.</span>';
 }
 function getImgSrc(img){
   if (!img) return 'img/logo.jpeg';
@@ -156,7 +162,7 @@ function subscribeProductos() {
           '<img src="' + getImgSrc(p.img) + '" alt="' + p.nombre + '" onerror="this.src=\'img/logo.jpeg\'">' +
           '<div>' +
             '<p class="product-row-name">' + p.nombre + '</p>' +
-            '<p class="product-row-price">' + fmt(p.precio) + ' &nbsp;·&nbsp; ' + stockLabel(p.stock) + '</p>' +
+            '<p class="product-row-price">' + fmt(p.precio) + ' &nbsp;·&nbsp; ' + stockLabel(stockTotal(p)) + '</p>' +
           '</div>' +
           (p.badge ? '<span class="badge-tag">' + p.badge + '</span>' : '<span></span>') +
           '<label class="toggle-dest' + (p.destacado ? ' on' : '') + '">' +
@@ -219,6 +225,8 @@ function openModal(data, id) {
   document.getElementById('pStock').value       = data ? (typeof data.stock !== 'undefined' ? data.stock : '') : '';
   document.getElementById('pTalles').value      = data ? (data.talles  || '') : '';
   document.getElementById('pColores').value     = data ? (data.colores || '') : '';
+  _stockMatrizTemp = data ? (data.stockMatrix || null) : null;
+  setTimeout(function(){ generarGrillaStock(_stockMatrizTemp); }, 50);
   document.getElementById('pOrden').value       = data ? data.orden    : 99;
   document.getElementById('pDestacado').checked = data ? !!data.destacado : false;
   document.getElementById('pImgUrl').value      = data ? data.img      : '';
@@ -298,6 +306,73 @@ function compressToBase64(file) {
   });
 }
 
+/* ============================================================
+   GRILLA DE STOCK POR VARIANTE
+   ============================================================ */
+function generarGrillaStock(matrizExistente) {
+  var talles  = (document.getElementById('pTalles').value  || '').split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+  var colores = (document.getElementById('pColores').value || '').split(',').map(function(c){ return c.trim(); }).filter(Boolean);
+  var row     = document.getElementById('stockMatrixRow');
+  var grid    = document.getElementById('stockMatrixGrid');
+
+  if (!talles.length && !colores.length) { row.style.display = 'none'; return; }
+  row.style.display = 'block';
+
+  var existente = matrizExistente || _stockMatrizTemp || {};
+
+  /* Caso: solo talles */
+  if (talles.length && !colores.length) {
+    var html = '<table class="stock-matrix"><tr><th>Talle</th><th>Unidades</th></tr>';
+    talles.forEach(function(t) {
+      var val = existente[t] !== undefined ? existente[t] : 0;
+      html += '<tr><td>' + t + '</td><td><input type="number" min="0" data-key="' + t + '" value="' + val + '"></td></tr>';
+    });
+    html += '</table>';
+    grid.innerHTML = html;
+    return;
+  }
+
+  /* Caso: solo colores */
+  if (!talles.length && colores.length) {
+    var html = '<table class="stock-matrix"><tr><th>Color</th><th>Unidades</th></tr>';
+    colores.forEach(function(c) {
+      var val = existente[c] !== undefined ? existente[c] : 0;
+      html += '<tr><td>' + c + '</td><td><input type="number" min="0" data-key="' + c + '" value="' + val + '"></td></tr>';
+    });
+    html += '</table>';
+    grid.innerHTML = html;
+    return;
+  }
+
+  /* Caso: talles + colores (grilla completa) */
+  var html = '<table class="stock-matrix"><tr><th></th>';
+  colores.forEach(function(c) { html += '<th>' + c + '</th>'; });
+  html += '</tr>';
+  talles.forEach(function(t) {
+    html += '<tr><td>' + t + '</td>';
+    colores.forEach(function(c) {
+      var key = t + '-' + c;
+      var val = existente[key] !== undefined ? existente[key] : 0;
+      html += '<td><input type="number" min="0" data-key="' + key + '" value="' + val + '"></td>';
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  grid.innerHTML = html;
+}
+
+function leerGrillaStock() {
+  var inputs = document.querySelectorAll('#stockMatrixGrid input[data-key]');
+  if (!inputs.length) return null;
+  var matriz = {};
+  inputs.forEach(function(input) {
+    matriz[input.getAttribute('data-key')] = parseInt(input.value, 10) || 0;
+  });
+  return matriz;
+}
+
+var _stockMatrizTemp = null;
+
 /* --- Guardar producto --- */
 document.getElementById('productForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -328,8 +403,9 @@ function saveProductData(imgValue, btn) {
     nombre:    document.getElementById('pNombre').value.trim(),
     precio:    parseInt(document.getElementById('pPrecio').value, 10),
     badge:     document.getElementById('pBadge').value.trim(),
-    descripcion: document.getElementById('pDesc').value.trim(),
-    stock:       parseInt(document.getElementById('pStock').value, 10) || 0,
+    descripcion:  document.getElementById('pDesc').value.trim(),
+    stock:        parseInt(document.getElementById('pStock').value, 10) || 0,
+    stockMatrix:  leerGrillaStock() || {},
     talles:    document.getElementById('pTalles').value.trim(),
     colores:   document.getElementById('pColores').value.trim(),
     orden:     parseInt(document.getElementById('pOrden').value, 10) || 0,

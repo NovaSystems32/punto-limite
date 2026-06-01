@@ -173,12 +173,17 @@
 
           <div class="form-row">
             <label>Talles disponibles (separados por coma)</label>
-            <input type="text" id="pTalles" placeholder="Ej: S,M,L,XL — dejá vacío si no tiene talles">
+            <input type="text" id="pTalles" placeholder="Ej: S,M,L,XL — dejá vacío si no tiene talles" oninput="generarGrillaStock()">
           </div>
 
           <div class="form-row">
             <label>Colores disponibles (separados por coma)</label>
-            <input type="text" id="pColores" placeholder="Ej: Negro,Blanco,Azul marino — dejá vacío si no aplica">
+            <input type="text" id="pColores" placeholder="Ej: Negro,Blanco,Azul — dejá vacío si no aplica" oninput="generarGrillaStock()">
+          </div>
+
+          <div class="form-row" id="stockMatrixRow" style="display:none">
+            <label>Stock por variante (unidades)</label>
+            <div id="stockMatrixGrid"></div>
           </div>
 
           <div class="form-row">

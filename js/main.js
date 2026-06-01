@@ -64,7 +64,12 @@ var productCache = {};
 function renderCard(data, docId) {
   var img    = data.img || '';
   var imgSrc = (img.startsWith('http') || img.startsWith('data:')) ? img : 'img/' + img;
-  var stock  = typeof data.stock !== 'undefined' ? Number(data.stock) : 99;
+  var stock = 99;
+  if (data.stockMatrix && Object.keys(data.stockMatrix).length) {
+    stock = Object.values(data.stockMatrix).reduce(function(a,b){ return a+(Number(b)||0); }, 0);
+  } else if (typeof data.stock !== 'undefined') {
+    stock = Number(data.stock);
+  }
   var stockBadge  = stock === 0 ? '<span class="stock-badge stock-out">Sin stock</span>'
                   : stock <= 5  ? '<span class="stock-badge stock-low">¡Últimas ' + stock + ' unidades!</span>'
                   : '';

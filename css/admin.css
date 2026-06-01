@@ -474,6 +474,43 @@ a { text-decoration: none; color: inherit; }
 .admin-toast.ok  { background: #0d0d0d; color: #fff; }
 .admin-toast.err { background: #ef4444; color: #fff; }
 
+/* Grilla de stock por variante */
+.stock-matrix { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.3rem; }
+.stock-matrix th {
+  background: var(--gray-light);
+  padding: 0.5rem 0.8rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid #e0e0e0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+.stock-matrix td {
+  border: 1px solid #e0e0e0;
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+}
+.stock-matrix td:first-child {
+  font-weight: 700;
+  background: var(--gray-light);
+  min-width: 50px;
+}
+.stock-matrix input {
+  width: 60px;
+  padding: 0.4rem 0.5rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.stock-matrix input:focus { border-color: var(--accent); }
+.stock-total-row { margin-top: 0.6rem; font-size: 0.8rem; color: var(--gray); }
+.stock-total-row strong { color: var(--black); }
+
 /* Responsive */
 @media (max-width: 600px) {
   .product-row { grid-template-columns: 44px 1fr auto auto; }
