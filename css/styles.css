@@ -299,6 +299,15 @@ img { display: block; max-width: 100%; }
 .hero-title__outline.entered {
   animation: enterUp 0.7s 0.2s var(--ease-out) forwards;
 }
+.hero-title__accent {
+  color: var(--accent) !important;
+  -webkit-text-stroke: 0 !important;
+  font-size: clamp(3rem, 7vw, 7rem) !important;
+  letter-spacing: 0.08em;
+}
+.hero-title__accent.entered {
+  animation: enterUp 0.7s 0.3s var(--ease-out) forwards;
+}
 
 /* Subtítulo */
 .hero-sub {
