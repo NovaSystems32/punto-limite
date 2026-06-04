@@ -1,21 +1,24 @@
 /* ============================================================
-   PUNTO LÍMITE — Premium Sport Brand
-   Estética: Nike · Gymshark · Alo Yoga · Apple Minimal
+   PUNTO LÍMITE — Argentina Mundial 2026
+   Celeste · Blanco · Azul Noche · Dorado
    ============================================================ */
 
 /* === VARIABLES === */
 :root {
-  --black:       #0D0D0D;
+  --black:       #080C1A;
   --white:       #FFFFFF;
-  --crudo:       #F4EFE4;
-  --crudo-dark:  #E6DFD0;
-  --petroleo:    #1A3535;
-  --accent:      #00BFA5;
-  --accent-dark: #009e88;
-  --gray:        #6B6B6B;
-  --gray-light:  #F0F0F0;
+  --crudo:       #EDF4FB;
+  --crudo-dark:  #C8DDEF;
+  --petroleo:    #001F5B;
+  --accent:      #74ACDF;
+  --accent-dark: #4A8FC4;
+  --gold:        #C9A227;
+  --gold-dark:   #a07d10;
+  --gray:        #5A6A8A;
+  --gray-light:  #EDF4FB;
 
   --font-display: 'Bebas Neue', sans-serif;
+  --font-alt:     'Oswald', sans-serif;
   --font-body:    'Montserrat', sans-serif;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -50,6 +53,14 @@ img { display: block; max-width: 100%; }
   padding: 0.8rem 0;
   transition: padding var(--t) var(--ease-out),
               box-shadow var(--t) var(--ease-out);
+}
+.navbar::after {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 33%, var(--white) 33%, var(--white) 66%, var(--accent) 66%);
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
 }
 .navbar.scrolled {
   padding: 0.55rem 0;
@@ -196,7 +207,7 @@ img { display: block; max-width: 100%; }
 .hero-bg__glow {
   position: absolute;
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(0,191,165,0.10) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(116,172,223,0.13) 0%, transparent 70%);
   right: 5%; top: 10%;
   filter: blur(60px);
 }
@@ -333,20 +344,20 @@ img { display: block; max-width: 100%; }
 
 /* Botón primario — fill con sweep */
 .hbtn--fill {
-  background: var(--accent);
-  color: var(--white);
+  background: var(--gold);
+  color: var(--black);
 }
 .hbtn--fill::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--accent-dark);
+  background: var(--gold-dark);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.38s var(--ease-in-out);
 }
 .hbtn--fill:hover::before { transform: scaleX(1); }
-.hbtn--fill:hover { box-shadow: 0 8px 28px rgba(0,191,165,0.35); }
+.hbtn--fill:hover { box-shadow: 0 8px 28px rgba(201,162,39,0.45); }
 .hbtn__label, .hbtn__icon { position: relative; z-index: 1; }
 .hbtn__icon { transition: transform var(--t) var(--ease-out); }
 .hbtn--fill:hover .hbtn__icon { transform: translateX(4px); }
@@ -419,7 +430,7 @@ img { display: block; max-width: 100%; }
 .hero-visual__glow {
   position: absolute;
   width: 460px; height: 460px;
-  background: radial-gradient(circle, rgba(0,191,165,0.22) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(116,172,223,0.26) 0%, transparent 65%);
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   filter: blur(50px);
@@ -451,7 +462,7 @@ img { display: block; max-width: 100%; }
   transform: translateY(-8px) scale(1.01);
   box-shadow:
     0 48px 100px rgba(0,0,0,0.22),
-    0 12px 30px rgba(0,191,165,0.12);
+    0 12px 30px rgba(116,172,223,0.15);
 }
 .hero-visual__img {
   width: 100%; height: 100%;
@@ -470,7 +481,7 @@ img { display: block; max-width: 100%; }
   width: clamp(320px, 36vw, 490px);
   height: clamp(320px, 36vw, 490px);
   border-radius: 50%;
-  border: 1px solid rgba(0,191,165,0.25);
+  border: 1px solid rgba(116,172,223,0.28);
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -528,7 +539,7 @@ img { display: block; max-width: 100%; }
 /* Líneas decorativas */
 .hero-visual__line {
   position: absolute;
-  background: rgba(0,191,165,0.3);
+  background: rgba(116,172,223,0.35);
   pointer-events: none;
   z-index: 1;
 }
@@ -598,17 +609,18 @@ img { display: block; max-width: 100%; }
   font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--gold);
   margin-bottom: 0.5rem;
 }
 .section-tag.light { color: rgba(255,255,255,0.6); }
 
 .section-title {
-  font-family: var(--font-display);
+  font-family: var(--font-alt);
   font-size: clamp(2.5rem, 5vw, 4rem);
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   color: var(--black);
+  font-weight: 700;
 }
 .section-title.light { color: var(--white); }
 .section-dark .section-title { color: var(--black); }
@@ -699,7 +711,7 @@ img { display: block; max-width: 100%; }
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(0,191,165,0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(116,172,223,0.10) 1px, transparent 1px);
   background-size: 30px 30px;
   pointer-events: none;
 }
@@ -762,8 +774,8 @@ img { display: block; max-width: 100%; }
   align-items: center;
   gap: 0.5rem;
   padding: 0.9rem 2.25rem;
-  background: var(--accent);
-  color: var(--white);
+  background: var(--gold);
+  color: var(--black);
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 700;
@@ -778,7 +790,7 @@ img { display: block; max-width: 100%; }
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--accent-dark);
+  background: var(--gold-dark);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.38s var(--ease-in-out);
@@ -786,14 +798,14 @@ img { display: block; max-width: 100%; }
 .btn-accent-solid:hover::before { transform: scaleX(1); }
 .btn-accent-solid:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,191,165,0.4);
+  box-shadow: 0 8px 24px rgba(201,162,39,0.45);
 }
 .btn-accent-solid span { position: relative; z-index: 1; }
 .banner-deco {
   flex-shrink: 0;
   font-family: var(--font-display);
   font-size: clamp(8rem, 18vw, 18rem);
-  color: rgba(0,191,165,0.08);
+  color: rgba(116,172,223,0.10);
   line-height: 1;
   user-select: none;
   pointer-events: none;
@@ -900,7 +912,7 @@ img { display: block; max-width: 100%; }
 }
 .about-logo:hover {
   transform: translate(-50%, -52%) scale(1.04);
-  box-shadow: 0 24px 60px rgba(0,191,165,0.18), 0 8px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 24px 60px rgba(116,172,223,0.22), 0 8px 24px rgba(0,0,0,0.1);
 }
 .about-label {
   position: absolute;
@@ -1375,7 +1387,7 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
   transition: background 0.2s, transform 0.18s;
 }
-.btn-checkout:hover { background: var(--accent); transform: translateY(-1px); }
+.btn-checkout:hover { background: var(--gold); color: var(--black); transform: translateY(-1px); }
 
 /* Formulario de checkout */
 .cart-checkout {
@@ -1499,7 +1511,7 @@ img { display: block; max-width: 100%; }
   font-size: 2rem;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 1.3rem;
-  box-shadow: 0 8px 32px rgba(0,191,165,0.28);
+  box-shadow: 0 8px 32px rgba(116,172,223,0.32);
 }
 .cart-success h4 {
   font-family: var(--font-display);
