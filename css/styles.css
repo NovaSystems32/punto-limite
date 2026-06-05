@@ -194,6 +194,28 @@ img { display: block; max-width: 100%; }
   user-select: none;
 }
 
+/* Imagen de fondo */
+.hero-bg__img {
+  position: absolute;
+  inset: 0;
+  background-image: url('img/fondo.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+/* Overlay para legibilidad del texto */
+.hero-bg__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(237,244,251,0.92) 0%,
+    rgba(237,244,251,0.80) 40%,
+    rgba(0,31,91,0.30) 100%
+  );
+}
+
 /* Dots sutiles */
 .hero-bg__dots {
   position: absolute;
@@ -203,7 +225,7 @@ img { display: block; max-width: 100%; }
   mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 100%);
 }
 
-/* Glow verde agua */
+/* Glow celeste */
 .hero-bg__glow {
   position: absolute;
   width: 600px; height: 600px;
