@@ -292,9 +292,10 @@ img { display: block; max-width: 100%; }
   margin-bottom: 2.25rem;
 }
 .hero-title__solid,
-.hero-title__outline {
+.hero-title__outline,
+.hero-title__celeste {
   font-family: var(--font-display);
-  font-size: clamp(5.5rem, 13vw, 12rem);
+  font-size: clamp(6.5rem, 15vw, 14rem);
   letter-spacing: -0.01em;
   display: block;
   opacity: 0;
@@ -314,6 +315,13 @@ img { display: block; max-width: 100%; }
 .hero-title__outline.entered {
   animation: enterUp 0.7s 0.2s var(--ease-out) forwards;
 }
+.hero-title__celeste {
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+}
+.hero-title__celeste.entered {
+  animation: enterUp 0.7s 0.2s var(--ease-out) forwards;
+}
 .hero-title__accent {
   color: var(--accent) !important;
   -webkit-text-stroke: 0 !important;
@@ -326,11 +334,11 @@ img { display: block; max-width: 100%; }
 
 /* Subtítulo */
 .hero-sub {
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: rgba(0,0,0,0.5);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--black);
   line-height: 1.8;
-  max-width: 340px;
+  max-width: 400px;
   margin-bottom: 2.5rem;
   opacity: 0;
   transform: translateY(20px);
