@@ -7,10 +7,22 @@
   <link rel="icon" type="image/jpeg" href="img/logo.jpeg">
   <link rel="apple-touch-icon" href="img/logo.jpeg">
   <link rel="stylesheet" href="css/admin.css">
+  <style>
+    /* === IMÁGENES EXTRA === */
+    .extra-imgs-section { margin-top: 0.5rem; }
+    .extra-imgs-label { font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; display: block; }
+    .extra-imgs-grid { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .extra-img-slot { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; border: 2px dashed #d1d5db; background: #f9fafb; }
+    .extra-img-preview { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .extra-img-remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.65); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+    .extra-img-add { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; cursor: pointer; font-size: 0.72rem; color: #6b7280; font-weight: 600; transition: background 0.15s; }
+    .extra-img-add:hover { background: #f0f4ff; }
+    .imgs-count { font-size: 0.72rem; background: #dbeafe; color: #1d4ed8; padding: 0.1rem 0.4rem; border-radius: 6px; font-weight: 600; }
+  </style>
 </head>
 <body>
 
-  <!-- ===== LOGIN ===== -->
+  <!-- LOGIN -->
   <div class="login-screen" id="loginScreen" style="display:none;">
     <div class="login-box">
       <img src="img/logo.jpeg" alt="Punto Límite" class="login-logo">
@@ -24,9 +36,8 @@
     </div>
   </div>
 
-  <!-- ===== DASHBOARD ===== -->
+  <!-- DASHBOARD -->
   <div class="admin-screen" id="adminScreen">
-
     <header class="admin-header">
       <div class="admin-header-left">
         <img src="img/logo.jpeg" alt="logo" class="admin-header-logo">
@@ -40,68 +51,46 @@
 
     <main class="admin-main">
 
-      <!-- ===== ESTADÍSTICAS ===== -->
+      <!-- ESTADÍSTICAS -->
       <div class="admin-stats-bar">
-        <div class="stat-card">
-          <span class="stat-card-value" id="statTotalMes">—</span>
-          <span class="stat-card-label">Vendido este mes</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card-value" id="statPedidosMes">—</span>
-          <span class="stat-card-label">Pedidos este mes</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card-value" id="statPendientes">—</span>
-          <span class="stat-card-label">Pendientes</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-card-value stat-small" id="statTopProducto">—</span>
-          <span class="stat-card-label">Más vendido</span>
-        </div>
+        <div class="stat-card"><span class="stat-card-value" id="statTotalMes">—</span><span class="stat-card-label">Vendido este mes</span></div>
+        <div class="stat-card"><span class="stat-card-value" id="statPedidosMes">—</span><span class="stat-card-label">Pedidos este mes</span></div>
+        <div class="stat-card"><span class="stat-card-value" id="statPendientes">—</span><span class="stat-card-label">Pendientes</span></div>
+        <div class="stat-card"><span class="stat-card-value stat-small" id="statTopProducto">—</span><span class="stat-card-label">Más vendido</span></div>
       </div>
 
-      <!-- ===== PRODUCTOS ===== -->
+      <!-- PRODUCTOS -->
       <div class="admin-section">
         <div class="admin-section-header">
           <h3>PRODUCTOS</h3>
           <button class="btn-primary" id="addProductBtn">+ Agregar producto</button>
         </div>
-
-        <!-- Banner para cargar productos de ejemplo la primera vez -->
         <div class="seed-banner" id="seedBanner">
-          <p><strong>No hay productos aún.</strong> ¿Querés cargar los productos de ejemplo para empezar?</p>
+          <p><strong>No hay productos aún.</strong> ¿Querés cargar los productos de ejemplo?</p>
           <button class="btn-seed" id="seedBtn">Cargar productos de ejemplo</button>
         </div>
-
-        <div class="product-list" id="adminProductList">
-          <p class="empty-list">Cargando...</p>
-        </div>
+        <div class="product-list" id="adminProductList"><p class="empty-list">Cargando...</p></div>
       </div>
 
-      <!-- ===== CUPONES ===== -->
+      <!-- CUPONES -->
       <div class="admin-section">
         <div class="admin-section-header">
           <h3>CUPONES</h3>
           <button class="btn-primary" id="addCouponBtn">+ Nuevo cupón</button>
         </div>
-        <div class="product-list" id="couponList">
-          <p class="empty-list">Cargando...</p>
-        </div>
+        <div class="product-list" id="couponList"><p class="empty-list">Cargando...</p></div>
         <form id="couponForm" class="coupon-form" style="display:none">
           <input type="text"   id="cCode"  placeholder="Código (ej: PROMO10)" required>
-          <select id="cTipo">
-            <option value="porcentaje">% descuento</option>
-            <option value="fijo">$ descuento fijo</option>
-          </select>
+          <select id="cTipo"><option value="porcentaje">% descuento</option><option value="fijo">$ descuento fijo</option></select>
           <input type="number" id="cValor" placeholder="Valor (ej: 10 = 10%)" min="1" required>
           <div style="display:flex;gap:0.5rem">
-            <button type="submit"  class="btn-primary" style="flex:1">Guardar</button>
-            <button type="button"  class="btn-cancel"  id="cancelCoupon">Cancelar</button>
+            <button type="submit" class="btn-primary" style="flex:1">Guardar</button>
+            <button type="button" class="btn-cancel" id="cancelCoupon">Cancelar</button>
           </div>
         </form>
       </div>
 
-      <!-- ===== PEDIDOS ===== -->
+      <!-- PEDIDOS -->
       <div class="admin-section">
         <div class="admin-section-header">
           <h3>PEDIDOS</h3>
@@ -110,15 +99,13 @@
             <button class="btn-primary" id="refreshOrders">↻ Actualizar</button>
           </div>
         </div>
-        <div id="adminOrderList">
-          <p class="empty-list">Cargando pedidos...</p>
-        </div>
+        <div id="adminOrderList"><p class="empty-list">Cargando pedidos...</p></div>
       </div>
 
     </main>
   </div>
 
-  <!-- ===== MODAL PRODUCTO ===== -->
+  <!-- MODAL PRODUCTO -->
   <div class="modal-overlay" id="productModal">
     <div class="modal">
       <div class="modal-header">
@@ -143,8 +130,9 @@
             <input type="text" id="pBadge" placeholder='Ej: "Nuevo", "Último!", "Oferta"'>
           </div>
 
+          <!-- IMAGEN PRINCIPAL -->
           <div class="form-row">
-            <label>Imagen — subir desde la computadora</label>
+            <label>📷 Foto principal — subir desde la computadora</label>
             <input type="file" id="pImgFile" accept="image/*">
             <div class="upload-bar-wrap" id="uploadBarWrap">
               <div class="upload-bar-bg"><div class="upload-bar" id="uploadBar"></div></div>
@@ -157,7 +145,16 @@
             <input type="text" id="pImgUrl" placeholder="https://...">
             <div class="img-preview-wrap">
               <img class="img-preview" id="imgPreview" alt="Vista previa">
-              <p class="img-hint">La imagen se ve así en la tienda.</p>
+              <p class="img-hint">Foto principal del producto.</p>
+            </div>
+          </div>
+
+          <!-- IMÁGENES EXTRA (CARRUSEL) -->
+          <div class="form-row">
+            <div class="extra-imgs-section">
+              <span class="extra-imgs-label">🖼️ Fotos adicionales para el carrusel (hasta 4 extras)</span>
+              <p class="img-hint" style="margin-bottom:0.5rem">Hacé clic en "+ Foto" para agregar más imágenes al producto.</p>
+              <div class="extra-imgs-grid" id="extraImgsContainer"></div>
             </div>
           </div>
 
@@ -165,23 +162,19 @@
             <label>Categoría</label>
             <input type="text" id="pCategoria" list="categoriasList" placeholder="Ej: Remeras, Buzos, Camperas...">
             <datalist id="categoriasList">
-              <option value="Sport">
-              <option value="Casual">
-              <option value="Zapatillas">
-              <option value="Remeras">
-              <option value="Remeras cortas">
               <option value="Buzos">
+              <option value="Remeras">
               <option value="Camperas">
-              <option value="Pantalones">
               <option value="Shorts">
               <option value="Medias">
+              <option value="Zapatillas">
               <option value="Accesorios">
             </datalist>
           </div>
 
           <div class="form-row">
-            <label>Descripción (se muestra al ver el detalle del producto)</label>
-            <input type="text" id="pDesc" placeholder="Ej: Campera liviana de alto rendimiento, ideal para running en frío.">
+            <label>Descripción</label>
+            <input type="text" id="pDesc" placeholder="Ej: Campera liviana de alto rendimiento.">
           </div>
 
           <div class="form-row">
@@ -191,12 +184,12 @@
 
           <div class="form-row">
             <label>Talles disponibles (separados por coma)</label>
-            <input type="text" id="pTalles" placeholder="Ej: S,M,L,XL — dejá vacío si no tiene talles" oninput="generarGrillaStock()">
+            <input type="text" id="pTalles" placeholder="Ej: S,M,L,XL" oninput="generarGrillaStock()">
           </div>
 
           <div class="form-row">
             <label>Colores disponibles (separados por coma)</label>
-            <input type="text" id="pColores" placeholder="Ej: Negro,Blanco,Azul — dejá vacío si no aplica" oninput="generarGrillaStock()">
+            <input type="text" id="pColores" placeholder="Ej: Negro,Blanco,Azul" oninput="generarGrillaStock()">
           </div>
 
           <div class="form-row" id="stockMatrixRow" style="display:none">
@@ -217,16 +210,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-cancel" id="cancelBtn">Cancelar</button>
-          <button type="submit" class="btn-save" id="saveBtn">Guardar producto</button>
+          <button type="submit" class="btn-save"   id="saveBtn">Guardar producto</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toast de notificaciones -->
   <div class="admin-toast" id="adminToast"></div>
 
-  <!-- Firebase CDN -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
