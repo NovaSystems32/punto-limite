@@ -33,7 +33,8 @@ function animateHero() {
   var sequence = [
     document.querySelector('.hero-eyebrow'),
     document.querySelector('.hero-title__solid'),
-    document.querySelector('.hero-title__outline'),
+    document.querySelector('.hero-title__celeste'),
+    document.querySelector('.hero-title__accent'),
     document.querySelector('.hero-sub'),
     document.querySelector('.hero-actions'),
     document.querySelector('.hero-stats')
@@ -135,9 +136,11 @@ function filterProducts(btn, cat, gridId) {
   btn.closest('.product-filters').querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
 
-  /* mostrar/ocultar cards */
+  /* mostrar/ocultar cards (comparación sin distinción de mayúsculas) */
+  var catNorm = cat.toLowerCase().trim();
   gridEl.querySelectorAll('.product-card').forEach(function(card) {
-    if (cat === 'Todos' || card.getAttribute('data-cat') === cat) {
+    var cardCat = (card.getAttribute('data-cat') || '').toLowerCase().trim();
+    if (cat === 'Todos' || cardCat === catNorm) {
       card.style.display = '';
     } else {
       card.style.display = 'none';
@@ -179,12 +182,15 @@ function loadToGrid(gridId, soloDestacados) {
       });
       if (cats.length) populateNavDropdowns(cats);
 
-      /* auto-filtrar si viene por URL ?cat=xxx */
+      /* auto-filtrar si viene por URL ?cat=xxx (sin distinción mayúsculas) */
       var urlCat = new URLSearchParams(window.location.search).get('cat');
       if (urlCat) {
         var filterEl = document.getElementById(filterId);
         if (filterEl) {
-          var btn = Array.from(filterEl.querySelectorAll('.filter-btn')).find(function(b) { return b.textContent === urlCat; });
+          var urlCatNorm = urlCat.toLowerCase().trim();
+          var btn = Array.from(filterEl.querySelectorAll('.filter-btn')).find(function(b) {
+            return b.textContent.toLowerCase().trim() === urlCatNorm;
+          });
           if (btn) btn.click();
         }
       }
