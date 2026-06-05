@@ -1833,6 +1833,22 @@ img { display: block; max-width: 100%; }
   width: 100%; padding: 1rem;
   font-size: 0.92rem;
 }
+.pd-pay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.pd-pay-badge {
+  background: var(--crudo);
+  border: 1px solid var(--crudo-dark);
+  color: var(--gray);
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
 
 @media (max-width: 640px) {
   .pd-grid { grid-template-columns: 1fr; }
