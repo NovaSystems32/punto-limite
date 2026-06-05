@@ -347,6 +347,18 @@ var _pdColor      = null;
 var _pdNeedsTalle = false;
 var _pdNeedsColor = false;
 var _pdNoStock    = false;
+var _pdImgs       = [];
+var _pdImgIdx     = 0;
+
+function pdGoTo(idx) {
+  if (!_pdImgs.length) return;
+  _pdImgIdx = (idx + _pdImgs.length) % _pdImgs.length;
+  var src = _pdImgs[_pdImgIdx];
+  document.getElementById('pdImg').src = (src.startsWith('http')||src.startsWith('data:')) ? src : 'img/'+src;
+  document.querySelectorAll('.pd-thumb').forEach(function(t,i){ t.classList.toggle('active', i===_pdImgIdx); });
+}
+function pdPrev() { pdGoTo(_pdImgIdx - 1); }
+function pdNext() { pdGoTo(_pdImgIdx + 1); }
 
 function openPD(docId) {
   var data = productCache[docId];
@@ -355,9 +367,36 @@ function openPD(docId) {
   _pdTalle = null;
   _pdColor = null;
 
-  var img = data.img || '';
-  var imgSrc = (img.startsWith('http') || img.startsWith('data:')) ? img : 'img/' + img;
-  document.getElementById('pdImg').src   = imgSrc;
+  /* --- Carrusel de imágenes --- */
+  var imgs = (data.imgs && data.imgs.length) ? data.imgs : (data.img ? [data.img] : []);
+  _pdImgs  = imgs;
+  _pdImgIdx = 0;
+
+  function toSrc(s){ return (s.startsWith('http')||s.startsWith('data:')) ? s : 'img/'+s; }
+
+  var pdImgEl = document.getElementById('pdImg');
+  pdImgEl.src = toSrc(imgs[0] || '');
+
+  /* Miniaturas */
+  var thumbsEl = document.getElementById('pdThumbs');
+  if (thumbsEl) {
+    if (imgs.length > 1) {
+      thumbsEl.innerHTML = imgs.map(function(src,i){
+        return '<img src="'+toSrc(src)+'" class="pd-thumb'+(i===0?' active':'')+'" onclick="pdGoTo('+i+')" alt="Foto '+(i+1)+'">';
+      }).join('');
+      thumbsEl.style.display = 'flex';
+    } else {
+      thumbsEl.innerHTML = '';
+      thumbsEl.style.display = 'none';
+    }
+  }
+
+  /* Flechas */
+  var prevBtn = document.getElementById('pdPrev');
+  var nextBtn = document.getElementById('pdNext');
+  if (prevBtn) prevBtn.style.display = imgs.length > 1 ? '' : 'none';
+  if (nextBtn) nextBtn.style.display = imgs.length > 1 ? '' : 'none';
+
   document.getElementById('pdName').textContent  = data.nombre;
   document.getElementById('pdPrice').textContent = '$' + Number(data.precio).toLocaleString('es-AR');
 
