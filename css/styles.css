@@ -1751,24 +1751,32 @@ img { display: block; max-width: 100%; }
   border-radius: 20px 0 0 20px;
   overflow: hidden;
   min-height: 420px;
+  display: flex;
+  flex-direction: column;
 }
-.pd-img-wrap img {
+.pd-img-main {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+.pd-img-wrap > img {
   width: 100%; height: 100%;
   object-fit: cover;
+  flex: 1;
 }
-.pd-badge { position: absolute; top: 1rem; left: 1rem; }
+.pd-badge { position: absolute; top: 1rem; left: 1rem; z-index: 2; }
 
 /* Flechas carrusel */
 .pd-arrow {
   position: absolute;
   top: 50%; transform: translateY(-50%);
   z-index: 3;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.50);
   color: var(--white);
   border: none;
   width: 36px; height: 36px;
   border-radius: 50%;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.18s, transform 0.18s;
@@ -1778,25 +1786,30 @@ img { display: block; max-width: 100%; }
 .pd-arrow--prev { left: 0.6rem; }
 .pd-arrow--next { right: 0.6rem; }
 
-/* Miniaturas carrusel */
+/* Miniaturas — fila debajo de la imagen principal */
 .pd-thumbs {
-  position: absolute;
-  bottom: 0.6rem; left: 0; right: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   gap: 0.4rem;
-  padding: 0 0.5rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--crudo);
+  border-top: 1px solid var(--crudo-dark);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
 }
+.pd-thumbs::-webkit-scrollbar { display: none; }
 .pd-thumb {
-  width: 52px; height: 52px;
+  width: 64px; height: 64px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   border: 2px solid transparent;
-  opacity: 0.65;
+  opacity: 0.6;
+  flex-shrink: 0;
   transition: opacity 0.18s, border-color 0.18s, transform 0.18s;
 }
-.pd-thumb:hover { opacity: 0.9; transform: translateY(-2px); }
+.pd-thumb:hover { opacity: 0.85; transform: translateY(-2px); }
 .pd-thumb.active { border-color: var(--accent); opacity: 1; }
 
 .pd-info {
