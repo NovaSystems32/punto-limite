@@ -325,10 +325,12 @@
       <button class="pd-close" onclick="closePD()">✕</button>
       <div class="pd-grid">
         <div class="pd-img-wrap">
-          <button class="pd-arrow pd-arrow--prev" id="pdPrev" onclick="pdPrev()" style="display:none">&#8249;</button>
-          <img id="pdImg" src="" alt="">
-          <button class="pd-arrow pd-arrow--next" id="pdNext" onclick="pdNext()" style="display:none">&#8250;</button>
-          <span class="product-badge pd-badge" id="pdBadge" style="display:none"></span>
+          <div style="position:relative;flex:1;overflow:hidden;">
+            <button class="pd-arrow pd-arrow--prev" id="pdPrev" onclick="pdPrev()" style="display:none">&#8249;</button>
+            <img id="pdImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;">
+            <button class="pd-arrow pd-arrow--next" id="pdNext" onclick="pdNext()" style="display:none">&#8250;</button>
+            <span class="product-badge pd-badge" id="pdBadge" style="display:none"></span>
+          </div>
           <div class="pd-thumbs" id="pdThumbs" style="display:none"></div>
         </div>
         <div class="pd-info">
