@@ -872,6 +872,7 @@ img { display: block; max-width: 100%; }
   align-items: flex-end;
   padding: 2rem;
   transition: transform var(--t) var(--ease-out);
+  text-decoration: none;
 }
 .category-card::before {
   content: '';
