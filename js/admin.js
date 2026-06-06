@@ -149,12 +149,16 @@ function openModal(data,id){
   document.getElementById('pImgUrl').value    =(data&&data.img&&!data.img.startsWith('data:'))?data.img:'';
   document.getElementById('pImgFile').value   ='';
 
-  /* Cargar imágenes extra existentes (imgs[1..n]) */
-  if(data&&data.imgs&&data.imgs.length>1){ _extraImgs=data.imgs.slice(1); }
+  /* Cargar imágenes extra existentes */
+  var mainImg = (data&&data.img) ? data.img : (data&&data.imgs&&data.imgs.length ? data.imgs[0] : '');
+  if(data&&data.imgs&&data.imgs.length){
+    /* si img está vacío, todos los imgs son extras; si no, desde el índice 1 */
+    _extraImgs = data.img ? data.imgs.slice(1) : data.imgs.slice(1);
+  }
 
   var btn=document.getElementById('saveBtn');
   btn.textContent='Guardar producto'; btn.disabled=false; btn.style.background='';
-  updateImgPreview(data?getImgSrc(data.img):null);
+  updateImgPreview(mainImg ? getImgSrc(mainImg) : null);
   renderExtraImgSlots();
   document.getElementById('uploadBarWrap').style.display='none';
   document.getElementById('uploadBar').style.width='0%';
@@ -291,6 +295,9 @@ function saveProductData(imgValue,btn){
   if(imgValue) allImgs.push(imgValue);
   _extraImgs.forEach(function(src){if(src) allImgs.push(src);});
 
+  /* Si no hay imagen principal pero sí extras, usar la primera como principal */
+  var finalImg = imgValue || (allImgs.length > 0 ? allImgs[0] : '');
+
   var data={
     nombre:      document.getElementById('pNombre').value.trim(),
     precio:      parseInt(document.getElementById('pPrecio').value,10),
@@ -303,7 +310,7 @@ function saveProductData(imgValue,btn){
     colores:     document.getElementById('pColores').value.trim(),
     orden:       parseInt(document.getElementById('pOrden').value,10)||0,
     destacado:   document.getElementById('pDestacado').checked,
-    img:         imgValue,
+    img:         finalImg,
     imgs:        allImgs
   };
 
