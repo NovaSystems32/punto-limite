@@ -63,7 +63,20 @@
       <div class="admin-section">
         <div class="admin-section-header">
           <h3>PRODUCTOS</h3>
-          <button class="btn-primary" id="addProductBtn">+ Agregar producto</button>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;">
+            <button class="btn-secondary" id="downloadTemplateBtn">⬇ Plantilla Excel</button>
+            <label class="btn-secondary" style="cursor:pointer;margin:0;">
+              📥 Importar Excel
+              <input type="file" id="importExcelInput" accept=".xlsx,.xls" style="display:none">
+            </label>
+            <button class="btn-primary" id="addProductBtn">+ Agregar producto</button>
+          </div>
+        </div>
+        <div id="importProgress" style="display:none;background:#f0f9ff;border:1px solid #74ACDF;border-radius:8px;padding:1rem;margin-bottom:1rem;">
+          <p id="importProgressText" style="font-size:0.85rem;font-weight:600;color:#001F5B;margin-bottom:0.5rem;">Importando...</p>
+          <div style="background:#C8DDEF;border-radius:4px;height:8px;">
+            <div id="importProgressBar" style="background:#74ACDF;height:8px;border-radius:4px;width:0%;transition:width 0.3s;"></div>
+          </div>
         </div>
         <div class="seed-banner" id="seedBanner">
           <p><strong>No hay productos aún.</strong> ¿Querés cargar los productos de ejemplo?</p>
@@ -218,6 +231,7 @@
 
   <div class="admin-toast" id="adminToast"></div>
 
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
