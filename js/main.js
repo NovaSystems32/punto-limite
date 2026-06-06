@@ -64,7 +64,8 @@ var pdCurrentImgIndex = 0;
 
 /* --- Render de una card de producto --- */
 function renderCard(data, docId) {
-  var img    = data.img || '';
+  /* Usar img, o el primer elemento de imgs si img está vacío */
+  var img = data.img || (data.imgs && data.imgs.length ? data.imgs[0] : '') || '';
   var imgSrc = img
     ? ((img.startsWith('http') || img.startsWith('data:')) ? img : 'img/' + img)
     : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'360\' viewBox=\'0 0 300 360\'%3E%3Crect width=\'300\' height=\'360\' fill=\'%23C8DDEF\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%23001F5B\'%3ESin imagen%3C/text%3E%3C/svg%3E';
