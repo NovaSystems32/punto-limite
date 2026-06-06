@@ -374,6 +374,115 @@ document.getElementById('exportBtn').addEventListener('click',function(){
   }).catch(function(e){console.error(e);btn.textContent='⬇ Exportar Excel';btn.disabled=false;showAdminToast('Error al exportar','err');});
 });
 
+/* === IMPORTAR EXCEL === */
+document.getElementById('importExcelInput').addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  this.value = ''; // reset para poder subir el mismo archivo de nuevo
+
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var wb = XLSX.read(ev.target.result, { type: 'binary' });
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+
+      if (!rows.length) { showAdminToast('El archivo está vacío', 'err'); return; }
+
+      // Validar que tenga columna "nombre"
+      if (!rows[0].hasOwnProperty('nombre')) {
+        showAdminToast('El archivo no tiene el formato correcto. Descargá la plantilla.', 'err');
+        return;
+      }
+
+      importarProductos(rows);
+    } catch(err) {
+      console.error(err);
+      showAdminToast('Error al leer el archivo. Usá el formato .xlsx', 'err');
+    }
+  };
+  reader.readAsBinaryString(file);
+});
+
+function importarProductos(rows) {
+  var progress  = document.getElementById('importProgress');
+  var bar       = document.getElementById('importProgressBar');
+  var text      = document.getElementById('importProgressText');
+  progress.style.display = 'block';
+
+  var total = rows.length;
+  var done  = 0;
+  var errores = 0;
+
+  function procesarSiguiente(i) {
+    if (i >= rows.length) {
+      bar.style.width = '100%';
+      text.textContent = '✓ ' + (done) + ' productos importados' + (errores ? ' · ' + errores + ' con error' : '') + '. ¡Acordate de agregar las fotos!';
+      setTimeout(function() { progress.style.display = 'none'; }, 5000);
+      showAdminToast(done + ' productos importados ✓', 'ok');
+      return;
+    }
+
+    var row = rows[i];
+    var data = {
+      nombre:      String(row.nombre       || '').trim(),
+      precio:      parseInt(row.precio)    || 0,
+      badge:       String(row.badge        || '').trim(),
+      categoria:   String(row.categoria    || '').trim(),
+      descripcion: String(row.descripcion  || '').trim(),
+      stock:       parseInt(row.stock)     || 0,
+      stockMatrix: {},
+      talles:      String(row.talles       || '').trim(),
+      colores:     String(row.colores      || '').trim(),
+      orden:       parseInt(row.orden)     || 99,
+      destacado:   String(row.destacado).toLowerCase() === 'si' || row.destacado === true,
+      img:         '',
+      imgs:        []
+    };
+
+    if (!data.nombre) { procesarSiguiente(i + 1); return; }
+
+    db.collection('productos').add(data)
+      .then(function() {
+        done++;
+        var pct = Math.round((i + 1) / total * 100);
+        bar.style.width = pct + '%';
+        text.textContent = 'Importando ' + (i + 1) + ' de ' + total + '...';
+        procesarSiguiente(i + 1);
+      })
+      .catch(function(err) {
+        console.error('Error fila ' + i, err);
+        errores++;
+        procesarSiguiente(i + 1);
+      });
+  }
+
+  procesarSiguiente(0);
+}
+
+/* === DESCARGAR PLANTILLA EXCEL === */
+document.getElementById('downloadTemplateBtn').addEventListener('click', function() {
+  var headers = [['nombre','precio','badge','categoria','descripcion','stock','talles','colores','orden','destacado']];
+  var ejemplo = [
+    ['Remera Deportiva', 15000, 'Nuevo', 'Remeras', 'Remera de alta performance', 10, 'S,M,L,XL', 'Negro,Blanco', 1, 'si'],
+    ['Buzo con Capucha', 32000, '', 'Buzos', 'Buzo abrigado ideal para entrenamiento', 8, 'M,L,XL', 'Azul,Gris', 2, 'si'],
+    ['Short Running', 12000, 'Oferta', 'Shorts', 'Short liviano con bolsillos', 15, 'S,M,L', 'Negro', 3, 'no'],
+  ];
+  var data = headers.concat(ejemplo);
+  var ws = XLSX.utils.aoa_to_sheet(data);
+
+  // Ancho de columnas
+  ws['!cols'] = [
+    {wch:25},{wch:10},{wch:12},{wch:12},{wch:40},
+    {wch:8},{wch:15},{wch:20},{wch:8},{wch:10}
+  ];
+
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Productos');
+  XLSX.writeFile(wb, 'plantilla-productos-punto-limite.xlsx');
+  showAdminToast('Plantilla descargada ✓', 'ok');
+});
+
 /* === CUPONES === */
 var unsubCupones=null;
 function subscribeCupones(){
