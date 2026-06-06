@@ -375,7 +375,13 @@ function openPD(docId) {
   function toSrc(s){ return (s.startsWith('http')||s.startsWith('data:')) ? s : 'img/'+s; }
 
   var pdImgEl = document.getElementById('pdImg');
-  pdImgEl.src = toSrc(imgs[0] || '');
+  if (imgs.length > 0) {
+    pdImgEl.src = toSrc(imgs[0]);
+    pdImgEl.style.display = '';
+  } else {
+    pdImgEl.src = '';
+    pdImgEl.style.display = 'none';
+  }
 
   /* Miniaturas */
   var thumbsEl = document.getElementById('pdThumbs');
