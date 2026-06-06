@@ -227,6 +227,23 @@ a { text-decoration: none; color: inherit; }
   transition: background 0.2s, transform 0.15s;
 }
 .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.btn-secondary:hover { background: var(--accent); color: var(--white); transform: translateY(-1px); }
 
 /* Seed banner */
 .seed-banner {
