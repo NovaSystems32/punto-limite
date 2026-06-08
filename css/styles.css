@@ -1137,6 +1137,32 @@ img { display: block; max-width: 100%; }
 }
 .footer-bottom span { color: var(--accent); font-weight: 600; }
 
+/* Crédito desarrollador */
+.footer-dev-credit {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.footer-dev-credit:hover { opacity: 1; }
+.footer-dev-credit span {
+  font-size: 0.68rem;
+  color: #aab8c8;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.footer-dev-logo {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+.footer-dev-credit:hover .footer-dev-logo { opacity: 1; }
+
 
 /* ============================================================
    FADE-IN AL SCROLL
